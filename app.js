@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var appRoutes = require('./routes/app');
+var authorizeRoutes = require('./routes/authorize');
 
 var app = express();
 
@@ -28,7 +29,9 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use('/authorize', authorizeRoutes);
 app.use('/', appRoutes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
