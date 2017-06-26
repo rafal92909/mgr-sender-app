@@ -16,8 +16,8 @@
           <li routerLinkActive="active"><a [routerLink]="['/send-data']">Send</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">            
-            <li routerLinkActive="active" *ngIf="!isLoggedIn()"><a [routerLink]="['/authorize/login']"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-            <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/authorize/logout']"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+            <li routerLinkActive="active" *ngIf="!isLoggedIn()"><a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+            <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/logout']"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
         </ul>
       </div>      
     </div>

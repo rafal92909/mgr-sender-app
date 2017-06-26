@@ -1,5 +1,5 @@
 import { AuthorizeService } from './authorize.service';
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 @Component({
     selector: 'mgr-login',
     templateUrl: './login.component.html',
-        styles: [`
+    styles: [`
         .backdrop {
             background-color: rgba(0,0,0,0.6);
             position: fixed;
@@ -18,7 +18,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
         }
     `]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     myForm: FormGroup;
     display = 'block';
 
@@ -38,5 +38,11 @@ export class LoginComponent {
         this.myForm.reset();
         
         this.router.navigate(['/logo']);
+    }
+
+    ngOnInit() {
+        this.myForm = new FormGroup({         
+            password: new FormControl(null, Validators.required)
+        });
     }
 }

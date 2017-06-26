@@ -1,3 +1,7 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { LogoutComponent } from './authorize/logout.component';
+import { LoginComponent } from './authorize/login.component';
 import { LogoComponent } from './logo.component';
 import { SetDataComponent } from './set-data/set-data.component';
 import { AuthenticationComponent } from './authorize/authentication.component';
@@ -17,6 +21,8 @@ import { SendDataComponent } from './send-data/send-data.component';
         AppComponent,        
         HeaderComponent,
         AuthenticationComponent,
+        LoginComponent,
+        LogoutComponent,        
         SetDataComponent,
         SendDataComponent,
         LogoComponent
@@ -24,7 +30,9 @@ import { SendDataComponent } from './send-data/send-data.component';
     imports: [
         BrowserModule, 
         routing, 
-        HttpModule
+        HttpModule,
+        CommonModule,
+        ReactiveFormsModule
     ],
     providers: [AuthorizeService],
     bootstrap: [AppComponent]

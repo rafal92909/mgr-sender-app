@@ -15,11 +15,16 @@
                             id="passworpin"
                             class="form-control"
                             formControlName="password">
-                </div>                
+                </div>                   
             </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="onClose()">Close</button>
+        <button
+                    (click)="onSubmit()"
+                    class="btn btn-primary"
+                    type="submit"
+                    [disabled]="!myForm.valid">Login</button>
       </div>
     </div>
   </div>
