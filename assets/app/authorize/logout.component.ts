@@ -4,10 +4,12 @@ import { Component } from "@angular/core";
 
 @Component({
     selector: 'mgr-logout',
-    templateUrl: './logout.component.html'
+    template: ''
 })
 export class LogoutComponent {
-    constructor(private authorizeService: AuthorizeService, private router: Router) { }
+    constructor(private authorizeService: AuthorizeService, private router: Router) { 
+        this.onLogout();    
+    }
     onLogout() {
         this.authorizeService.logout();
         this.router.navigate(['/authorize', 'login']);

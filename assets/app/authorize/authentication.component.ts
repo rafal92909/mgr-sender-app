@@ -6,9 +6,6 @@ import { Component } from "@angular/core";
     templateUrl: './authentication.component.html'
 })
 export class AuthenticationComponent {
-    constructor(private authorizeService: AuthorizeService) { }
+    constructor() { }
 
-    isLoggedIn() {
-        
-    }
 }

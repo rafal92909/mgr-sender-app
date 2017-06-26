@@ -33,8 +33,6 @@ export class AuthorizeService {
     }
 
     isLoggedIn() {
-        this.isLogin = !this.isLogin;
-        return this.isLogin;
-
+        return localStorage.getItem('token') !== null;
     }
 }

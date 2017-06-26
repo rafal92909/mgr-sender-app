@@ -1,11 +1,16 @@
+import { LogoComponent } from './logo.component';
+import { SendDataComponent } from './send-data/send-data.component';
+import { SetDataComponent } from './set-data/set-data.component';
 
 import { AuthenticationComponent } from './authorize/authentication.component';
-//import { MessagesComponent } from './messages/messages.component';
 import { Routes, RouterModule } from "@angular/router";
+
 const APP_ROUTES: Routes = [
-    { path: '', redirectTo: '/', pathMatch: 'full' },
-    //{ path: 'data', component: MessagesComponent },
-    { path: 'authorize', component: AuthenticationComponent, loadChildren: './authorize/authorize.module#AuthorizeModule' }
+    { path: '', redirectTo: '/logo', pathMatch: 'full' },
+    { path: 'set-data', component: SetDataComponent },    
+    { path: 'send-data', component: SendDataComponent },
+    { path: 'authorize', component: AuthenticationComponent, loadChildren: './authorize/authorize.module#AuthorizeModule' },
+    { path: 'logo', component: LogoComponent }
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

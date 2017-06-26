@@ -6,28 +6,37 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
     selector: 'mgr-login',
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',
+        styles: [`
+        .backdrop {
+            background-color: rgba(0,0,0,0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+        }
+    `]
 })
 export class LoginComponent {
     myForm: FormGroup;
+    display = 'block';
 
     constructor(private authorizeService: AuthorizeService, private router: Router) { }
+
+    onClose() {
+        this.display = 'none';
+        this.router.navigate(['/logo']);
+    }
 
     onSubmit() {        
         this.authorizeService.login().subscribe(
             data => console.log(data), 
             error => console.error(error)
         );
+        localStorage.token = "login_token";
         this.myForm.reset();
-    }
-
-    ngOnInit() {
-        this.myForm = new FormGroup({
-            email: new FormControl(null, [
-                Validators.required,
-                Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-            ]),
-            password: new FormControl(null, Validators.required)
-        });
+        
+        this.router.navigate(['/logo']);
     }
 }
