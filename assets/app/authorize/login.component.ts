@@ -21,7 +21,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 export class LoginComponent implements OnInit {
     myForm: FormGroup;
     display = 'block';
-
+    
     constructor(private authorizeService: AuthorizeService, private router: Router) { }
 
     onClose() {

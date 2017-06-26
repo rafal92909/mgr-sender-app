@@ -9,7 +9,6 @@ var appRoutes = require('./routes/app');
 var authorizeRoutes = require('./routes/authorize');
 var setDataRoutes = require('./routes/set-data');
 var sendDataRoutes = require('./routes/send-data');
-//var auth2 = require('./routes/auth2');
 
 var app = express();
 
@@ -33,7 +32,6 @@ app.use(function(req, res, next) {
 });
 
 app.use('/authorize', authorizeRoutes);
-//app.use('/auth2', auth2);
 app.use('/set-data', setDataRoutes);
 app.use('/send-data', sendDataRoutes);
 app.use('/', appRoutes);
