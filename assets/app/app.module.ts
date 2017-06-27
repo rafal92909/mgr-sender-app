@@ -1,3 +1,4 @@
+import { ErrorServie } from './error/error.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LogoutComponent } from './authorize/logout.component';
@@ -15,6 +16,7 @@ import { routing } from './app.routing';
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from './header.component';
 import { SendDataComponent } from './send-data/send-data.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,8 @@ import { SendDataComponent } from './send-data/send-data.component';
         LogoutComponent,        
         SetDataComponent,
         SendDataComponent,
-        LogoComponent
+        LogoComponent,
+        ErrorComponent
 ],
     imports: [
         BrowserModule, 
@@ -34,7 +37,7 @@ import { SendDataComponent } from './send-data/send-data.component';
         CommonModule,
         ReactiveFormsModule
     ],
-    providers: [AuthorizeService],
+    providers: [AuthorizeService, ErrorServie],
     bootstrap: [AppComponent]
 })
 export class AppModule {

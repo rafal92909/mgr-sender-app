@@ -1,3 +1,4 @@
+import { ErrorComponent } from './error/error.component';
 import { LogoutComponent } from './authorize/logout.component';
 import { LoginComponent } from './authorize/login.component';
 import { LogoComponent } from './logo.component';

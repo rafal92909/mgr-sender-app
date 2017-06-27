@@ -3,77 +3,42 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-
-/* GET home page. */
-router.post('/', function (req, res, next) {
-    // var pass = "";
-    // var user = '{ "firstName": "R", "lastName": "M", "email": "test@test.pl", "password": "' + bcrypt.hashSync(req.body.password, 10) + '" }';
-
-    // try {
-    //     user = JSON.parse(texuser);
-    // } catch (e) {
-    //     return res.status(500).json({
-    //         title: 'An error occured',
-    //         error: err
-    //     });
-    // }
-
-    // user.save(function (err, result) {
-    //     if (err) {
-    //         return res.status(500).json({
-    //             title: 'An error occured',
-    //             error: err
-    //         });
-    //     }
-
-    //     res.status(201).json({
-    //         message: 'User created',
-    //         obj: result
-    //     });
-    // });
-    console.log('signin success');
-    res.status(201).json({
-            message: 'User created'
-    });
-});
+var fs = require("fs");
 
 router.post('/login', function (req, res, next) {
-    // User.findOne({ email: req.body.email }, function (err, user) {
-    //     if (err) {
-    //         return res.status(500).json({
-    //             title: 'An error occured',
-    //             error: err
-    //         });
-    //     }
+    fs.readFile("./myconfig.json", function(err, data) {
+        if (err) {
+            return res.status(500).json({
+                title: 'Cannot read the config file.',
+                error: { message: err.message }
+            });
+        }
 
-    //     if (!user) {
-    //         return res.status(500).json({
-    //             title: 'Login failed',
-    //             error: { message: 'Invalid login credentials' }
-    //         });
-    //     }
+        try {
+            data = JSON.parse(data);
+            var pin = data.pin;
 
-    //     if (!bcrypt.compareSync(req.body.password, user.password)) {
-    //         return res.status(401).json({
-    //             title: 'Login failed',
-    //             error: { message: 'Invalid login credentials' }
-    //         });
-    //     }
+            if (pin !== req.body.pin) {
+                return res.status(500).json({
+                    title: 'Invalid login credentials.',
+                    error: { message: 'Wrong pin code.' }
+                });
+            }
 
-    //     var token = jwt.sign({ user: user }, 'secret_string', { expiresIn: 60 });
-    //     console.log('1 min');
-    //     res.status(200).json({
-    //         message: 'Successfully logged in',
-    //         token: token,
-    //         userId: user._id
-    //     })
+            var token = jwt.sign({ authorization: 'success' }, data.secret_string, { expiresIn: 60 });
+            res.status(200).json({
+                message: 'Successfully logged in.',
+                token: token
+            });
 
-    // });
+        } catch (e) {
+            return res.status(500).json({
+                title: 'Cannot read the config file.',
+                error: { message: e.message }
+            });
+        }
 
-    console.log('login success');
-    res.status(200).json({
-        message: 'Successfully logged in'
-    })
+    });
 });
 
 module.exports = router;

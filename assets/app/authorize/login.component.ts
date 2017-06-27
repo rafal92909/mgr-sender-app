@@ -26,18 +26,21 @@ export class LoginComponent implements OnInit {
 
     onClose() {
         this.display = 'none';
-        this.router.navigate(['/logo']);
+        this.router.navigateByUrl('/logo');
     }
 
     onSubmit() {        
-        this.authorizeService.login().subscribe(
-            data => console.log(data), 
-            error => console.error(error)
-        );
-        localStorage.token = "login_token";
-        this.myForm.reset();
-        
-        this.router.navigate(['/logo']);
+        this.authorizeService.login(this.myForm.value.password).subscribe(
+            data => { 
+                localStorage.setItem('token', data.token);
+                this.myForm.reset();
+                this.router.navigateByUrl('/logo');
+            },
+            error => {
+                console.error(error);
+                this.router.navigateByUrl('/logo');
+            }
+        );        
     }
 
     ngOnInit() {
