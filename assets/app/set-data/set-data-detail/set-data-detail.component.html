@@ -8,12 +8,11 @@
       </div>
       <div class="panel-collapse collapse in" role="tabpanel" id="collapseData" aria-labelledby="headingData" aria-expanded="true">
         <div class="panel-body">
-          <!--<mgr-set-data-data-frame  [dataFrameId]="item?.dataFrameId" [itemId]="item.itemId"></mgr-set-data-data-frame>-->
-          <mgr-set-data-data-frame  [item]="item"></mgr-set-data-data-frame>
+          <mgr-set-data-data-frame [item]="item"></mgr-set-data-data-frame>
         </div>
       </div>
     </div>
-    
+
     <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="headingDesc">
         <h4 class="panel-title">
@@ -24,10 +23,9 @@
       <div class="panel-collapse collapse" role="tabpanel" id="collapseDesc" aria-labelledby="headingDesc" aria-expanded="false"
         style="height: 0px;">
         <div class="panel-body">
-          <!--<mgr-set-data-desc-frame [descFrameId]="item?.descFrameId"></mgr-set-data-desc-frame>-->
+          <mgr-set-data-desc-frame [item]="item"></mgr-set-data-desc-frame>
         </div>
       </div>
     </div>
   </div>
-
-  
+</div>

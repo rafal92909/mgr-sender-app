@@ -1,3 +1,4 @@
+import { Item } from './../../../item.model';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -6,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SetDataDescFrameComponent implements OnInit {
 
-  @Input() descFrameId: string;
+  @Input() item: Item;
   constructor() { }
 
   ngOnInit() {
