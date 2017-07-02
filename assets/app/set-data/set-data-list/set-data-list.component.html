@@ -1,0 +1,13 @@
+<div class="row">
+    <button class="btn btn-success">New Item</button>
+</div>
+<hr>
+<div class="row">
+<div class="list-group" style="overflow-y:scroll; max-height: calc(100vh - 270px);" >
+     <mgr-set-data-item
+      *ngFor="let itemEl of items"
+      [item]="itemEl"
+      (itemClicked)="onItemClicked(itemEl)"></mgr-set-data-item>
+</div>
+</div>
+

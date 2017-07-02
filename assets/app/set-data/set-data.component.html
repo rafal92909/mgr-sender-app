@@ -1,3 +1,13 @@
-<p>
-  set-data works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <mgr-set-data-list (itemClickedList)="clickedItem = $event"></mgr-set-data-list>
+  </div>
+  <div class="col-md-8">
+    <mgr-set-data-detail *ngIf="clickedItem; else showText" [item]="clickedItem"></mgr-set-data-detail>
+    <ng-template #showText>
+      <div class="alert alert-info">
+        <strong>Please select an Item!</strong>
+      </div>
+    </ng-template>
+  </div>
+</div>

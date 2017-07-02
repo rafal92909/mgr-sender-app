@@ -7,7 +7,10 @@
         <h4 class="modal-title">{{ error?.title }}</h4>
       </div>
       <div class="modal-body">
-        <p>{{ error?.message }}</p>
+        <div class="alert alert-danger">
+        <strong>{{ error?.message }}</strong>
+      </div>
+        <p></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="onErrorHandled()">Close</button>

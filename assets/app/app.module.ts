@@ -1,3 +1,8 @@
+import { SetDataDescFrameComponent } from './set-data/set-data-detail/set-data-desc-frame/set-data-desc-frame.component';
+import { SetDataDataFrameComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame.component';
+import { SetDataItemComponent } from './set-data/set-data-list/set-data-item/set-data-item.component';
+import { SetDataListComponent } from './set-data/set-data-list/set-data-list.component';
+import { SetDataDetailComponent } from './set-data/set-data-detail/set-data-detail.component';
 import { ErrorServie } from './error/error.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -28,7 +33,12 @@ import { ErrorComponent } from './error/error.component';
         SetDataComponent,
         SendDataComponent,
         LogoComponent,
-        ErrorComponent
+        ErrorComponent,
+        SetDataDetailComponent,
+        SetDataListComponent,
+        SetDataItemComponent,
+        SetDataDataFrameComponent,
+        SetDataDescFrameComponent
 ],
     imports: [
         BrowserModule, 
