@@ -8,7 +8,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SetDataDetailComponent implements OnInit {
   @Input() item: Item;
 
-  constructor() { }
+  constructor() { 
+
+  }
 
   ngOnInit() {
   }

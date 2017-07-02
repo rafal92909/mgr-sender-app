@@ -1,0 +1,33 @@
+<div class="container" style="width: 100%">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="key">Key</label>
+      <input type="text" id="key" class="form-control" name="key" formControlName="key">
+    </div>
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select class="form-control" id="type" name="type" formControlName="type">
+                    <option value="" selected="selected">Select a type</option>
+                    <option value="string">String</option>
+                    <option value="number">Number</option>
+                    <option value="decimal">Decimal</option>
+                    <option value="date">Date</option>
+                    <option value="aString">Array of strings</option>
+                    <option value="aNumber">Array of numbers</option>
+                    <option value="aDecimal">Array of decimals</option>
+                    <option value="aDate">Array of dates</option>
+                </select>
+    </div>
+    <div class="form-group">
+      <label for="value">Value</label>
+      <select class="form-control" id="value" name="value" formControlName="value">
+                    <option value="" selected="selected">Select a value</option>
+                    <option value="interval">Interval</option>
+                    <option value="set">Set</option>
+                    <option value="const">Const</option>
+                    <option value="getdate">getDate</option>                    
+                </select>
+    </div>
+    <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid">Submit</button>
+  </form>
+</div>
