@@ -13,6 +13,7 @@ import { Component, OnInit } from '@angular/core';
             left: 0;
             width: 100%;
             height: 100vh;
+            z-index: 1;
         }
   `]
 })

@@ -25,7 +25,7 @@ router.post('/login', function (req, res, next) {
                 });
             }
 
-            var token = jwt.sign({ authorization: 'success' }, data.secret_string, { expiresIn: 60 });
+            var token = jwt.sign({ authorization: 'success' }, data.secret_string, { expiresIn: 1500 });
             res.status(200).json({
                 message: 'Successfully logged in.',
                 token: token

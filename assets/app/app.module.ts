@@ -1,3 +1,5 @@
+import { SetDataServie } from './set-data/set-data.service';
+import { SetDataAddItemComponent } from './set-data/set-data-list/set-data-add-item/set-data-add-item.component';
 import { SetDataDataFrameFormComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-form/set-data-data-frame-form.component';
 import { SetDataDescFrameComponent } from './set-data/set-data-detail/set-data-desc-frame/set-data-desc-frame.component';
 import { SetDataDataFrameComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame.component';
@@ -41,7 +43,8 @@ import { ErrorComponent } from './error/error.component';
         SetDataItemComponent,
         SetDataDataFrameComponent,
         SetDataDescFrameComponent,
-        SetDataDataFrameFormComponent
+        SetDataDataFrameFormComponent,
+        SetDataAddItemComponent
 ],
     imports: [
         BrowserModule, 
@@ -51,7 +54,7 @@ import { ErrorComponent } from './error/error.component';
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [AuthorizeService, ErrorServie],
+    providers: [AuthorizeService, ErrorServie, SetDataServie],
     bootstrap: [AppComponent]
 })
 export class AppModule {
