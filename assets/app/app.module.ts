@@ -1,3 +1,4 @@
+import { SetDataDataFramePartComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-part/set-data-data-frame-part.component';
 import { SetDataServie } from './set-data/set-data.service';
 import { SetDataAddItemComponent } from './set-data/set-data-list/set-data-add-item/set-data-add-item.component';
 import { SetDataDataFrameFormComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-form/set-data-data-frame-form.component';
@@ -44,7 +45,8 @@ import { ErrorComponent } from './error/error.component';
         SetDataDataFrameComponent,
         SetDataDescFrameComponent,
         SetDataDataFrameFormComponent,
-        SetDataAddItemComponent
+        SetDataAddItemComponent,
+        SetDataDataFramePartComponent
 ],
     imports: [
         BrowserModule, 

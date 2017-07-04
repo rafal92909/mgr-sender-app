@@ -1,0 +1,13 @@
+<div class="container" style="width: 100%">
+  <article class="panel panel-default" style="margin-bottom: 5px">
+    <div class="panel-body" style="height: 45px">
+      <p>{{ dataFramePart.dataFrameId }} &#123; key : {{ dataFramePart.key }}, type : {{ dataFramePart.type }}, value : {{ dataFramePart.value }} &#125;,</p>
+    </div>
+    <footer class="panel-footer" style="text-align: right; height: 30px">      
+      <div style="margin-top: -6px">
+        <button class="btn btn-info btn-xs" (click)="onEdit()">Edit</button>
+        <button class="btn btn-danger btn-xs" (click)="onDelete()">Delete</button>
+      </div>
+    </footer>
+  </article>
+</div>

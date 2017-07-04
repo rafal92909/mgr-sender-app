@@ -1,7 +1,6 @@
 import { SetDataServie } from './../set-data.service';
-import { EventEmitter } from '@angular/core';
 import { Item } from './../../item.model';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'mgr-set-data-list',

@@ -1,4 +1,4 @@
-export class DataFrame {
+export class DataFramePart {
     constructor(
         public key: string, 
         public type: string, 

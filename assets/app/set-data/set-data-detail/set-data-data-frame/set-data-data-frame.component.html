@@ -6,24 +6,9 @@
   <div class="container" style="width: 100%">
     <p>
       &#91;</p>
-
-    <div class="container" style="width: 100%" *ngFor="let dataFrame of dataFrames">
-
-      <article class="panel panel-default" style="margin-bottom: 5px">
-        <div class="panel-body" style="height: 45px">
-          <p>&#123; key : {{ dataFrame.key }}, type : {{ dataFrame.type }}, value : {{ dataFrame.value }} &#125;,</p>
-        </div>
-        <footer class="panel-footer" style="text-align: right; height: 30px">
-          <div style="margin-top: -6px">
-            <button class="btn btn-info btn-xs" (click)="onEdit()">Edit</button>
-            <button class="btn btn-danger btn-xs" (click)="onDelete()">Delete</button>
-          </div>
-        </footer>
-      </article>
-    </div>
+    <mgr-set-data-data-frame-part *ngFor="let dataFramePart of dataFrameParts" [dataFramePart]="dataFramePart"></mgr-set-data-data-frame-part>
     <p>&#93;</p>
+    <button class="btn btn-success" (click)="newDataPartClick()">New part</button>
     <mgr-set-data-data-frame-form></mgr-set-data-data-frame-form>
-
-
   </div>
 </div>

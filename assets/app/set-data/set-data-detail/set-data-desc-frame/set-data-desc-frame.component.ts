@@ -1,5 +1,4 @@
-import { Item } from './../../../item.model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'mgr-set-data-desc-frame',
@@ -7,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SetDataDescFrameComponent implements OnInit {
 
-  @Input() item: Item;
+  
   constructor() { }
 
   ngOnInit() {

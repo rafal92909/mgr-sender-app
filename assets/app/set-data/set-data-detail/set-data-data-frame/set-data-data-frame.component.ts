@@ -1,5 +1,6 @@
+import { SetDataServie } from './../../set-data.service';
 import { Item } from './../../../item.model';
-import { DataFrame } from './data-frame.model';
+import { DataFramePart } from './data-frame.model';
 import { Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
@@ -9,36 +10,26 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
   selector: 'mgr-set-data-data-frame',
   templateUrl: './set-data-data-frame.component.html'
 })
-export class SetDataDataFrameComponent implements OnInit, OnChanges {  
+export class SetDataDataFrameComponent implements OnInit {
   @Input() item: Item;
 
-  dataFrames: DataFrame[];
+  dataFrameParts: DataFramePart[];
 
-  constructor() { }
+  constructor(private setDataServie: SetDataServie) { }
 
   ngOnInit() {
-  }
 
+  }
 
   ngOnChanges() {
-    console.log(this.item.itemId);
-    if (this.item.itemId === "Item id 1231") {
-      this.dataFrames = [
-        new DataFrame("loggerId", "string", "const", this.item.itemId, this.item.dataFrameId),
-        new DataFrame("temperatures", "aDecimal", "interval", this.item.itemId, this.item.dataFrameId),
-        new DataFrame("batteryVoltage", "decimal", "interval", this.item.itemId, this.item.dataFrameId),
-        new DataFrame("measurmentTime", "date", "getDate", this.item.itemId, this.item.dataFrameId)
-      ]
-    } else {
-      this.dataFrames = [
-        new DataFrame("loggerId", "string", "const", this.item.itemId, this.item.dataFrameId)
-      ]
-    }
+    this.setDataServie.getDataFramePart(this.item.itemId).subscribe(
+      (dataFrameParts: DataFramePart[]) => {
+        this.dataFrameParts = dataFrameParts;
+      }
+    );
   }
-  onEdit() {
-    console.log('edit');
-  }
-  onDelete() {
-    console.log('delete');
+
+  newDataPartClick() {
+    this.setDataServie.newDataPartClick(this.item.itemId);
   }
 }
