@@ -29,9 +29,9 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/logo');
     }
 
-    onSubmit() {        
+    onSubmit() {
         this.authorizeService.login(this.myForm.value.password).subscribe(
-            data => { 
+            data => {
                 localStorage.setItem('token', data.token);
                 this.myForm.reset();
                 this.router.navigateByUrl('/logo');
@@ -40,11 +40,11 @@ export class LoginComponent implements OnInit {
                 console.error(error);
                 this.router.navigateByUrl('/logo');
             }
-        );        
+        );
     }
 
     ngOnInit() {
-        this.myForm = new FormGroup({         
+        this.myForm = new FormGroup({
             password: new FormControl(null, Validators.required)
         });
     }

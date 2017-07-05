@@ -14,7 +14,12 @@ export class SetDataServie {
 
     newItem = new EventEmitter();
     newDataPart = new EventEmitter();
+    resetDataDetail = new EventEmitter();
     constructor(private http: Http, private errorService: ErrorServie) { }
+
+    resetDataDetailFunc() {
+        this.resetDataDetail.emit();
+    }
 
     //////////////////////////////////////////////////////////////////////////////////// ITEM
     newItemClick() {
@@ -72,6 +77,22 @@ export class SetDataServie {
             );
     }
 
+    deleteItem(item: Item) {
+        this.items.splice(this.items.indexOf(item), 1);
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.http.delete('http://localhost:3000/set-data/delete-item/' + item.itemId + token)
+            .map((response: Response) => {
+                this.resetDataDetail.emit();
+                response.json();
+            })
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json());
+            });
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////// DATA PART
     newDataPartClick(itemId: string) {
@@ -90,7 +111,7 @@ export class SetDataServie {
                 const dfp = new DataFramePart(
                     result.obj.key,
                     result.obj.type,
-                    result.obj.value,                    
+                    result.obj.value,
                     result.obj.itemId,
                     result.obj._id
                 )
@@ -105,7 +126,7 @@ export class SetDataServie {
             );
     }
 
-    getDataFramePart(itemId: String) {        
+    getDataFramePart(itemId: String) {
         const token = localStorage.getItem('token')
             ? '&token=' + localStorage.getItem('token')
             : '';
@@ -119,7 +140,7 @@ export class SetDataServie {
                         dataFramePart.type,
                         dataFramePart.value,
                         dataFramePart.item._id,
-                        dataFramePart._id                        
+                        dataFramePart._id
                     ));
                 }
                 this.dataFrameParts = newDataFrameParts;
@@ -131,6 +152,19 @@ export class SetDataServie {
                 return Observable.throw(error.json())
             }
             );
+    }
+
+    deleteDataFramePart(dataFramePart: DataFramePart) {
+        this.dataFrameParts.splice(this.dataFrameParts.indexOf(dataFramePart), 1);
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.http.delete('http://localhost:3000/set-data/delete-data-frame-part/' + dataFramePart.dataFrameId + token)
+            .map((response: Response) => response.json())
+            .catch((error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json());
+            });
     }
 
 }

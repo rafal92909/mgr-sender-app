@@ -1,3 +1,4 @@
+import { SetDataServie } from './../../set-data.service';
 import { Item } from './../../../item.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
@@ -9,13 +10,20 @@ export class SetDataItemComponent implements OnInit {
 
   @Input() item: Item;  
   @Output() itemClicked = new EventEmitter<void>();
-  constructor() { }
+  constructor(private setDataServie: SetDataServie) { }
 
   ngOnInit() {
   }
 
-  onClick() {
+  onClick(event) {
+    event.preventDefault();
     this.itemClicked.emit();
   }
 
+  onDelete(event) {
+    event.preventDefault();
+    this.setDataServie.deleteItem(this.item).subscribe(
+      result => console.log(result)
+    );
+  }
 }

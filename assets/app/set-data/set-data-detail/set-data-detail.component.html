@@ -1,31 +1,12 @@
-<div class="panel-group" role="tablist" id="accordion" aria-multiselectable="true">
-  <div class="row" style="overflow-y:auto; max-height: calc(100vh - 195px);">
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="headingData">
-        <h4 class="panel-title">
-          <a href="#collapseData" role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseData">Data frame {{ item.itemId }}</a>
-        </h4>
-      </div>
-      <div class="panel-collapse collapse in" role="tabpanel" id="collapseData" aria-labelledby="headingData" aria-expanded="true">
-        <div class="panel-body">
-          <mgr-set-data-data-frame [item]="item"></mgr-set-data-data-frame>
-        </div>
-      </div>
+<div class="row" style="overflow-y:auto; max-height: calc(100vh - 195px);">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        Data frame {{ item.itemId }}
+      </h4>
     </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="headingDesc">
-        <h4 class="panel-title">
-          <a href="#collapseDesc" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="false"
-            aria-controls="collapseDesc">Description frame</a>
-        </h4>
-      </div>
-      <div class="panel-collapse collapse" role="tabpanel" id="collapseDesc" aria-labelledby="headingDesc" aria-expanded="false"
-        style="height: 0px;">
-        <div class="panel-body">
-          <mgr-set-data-desc-frame></mgr-set-data-desc-frame>
-        </div>
-      </div>
+    <div class="panel-body">
+      <mgr-set-data-data-frame [item]="item"></mgr-set-data-data-frame>
     </div>
   </div>
 </div>

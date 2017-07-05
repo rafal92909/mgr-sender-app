@@ -3,12 +3,12 @@
 </div>
 <mgr-set-data-add-item></mgr-set-data-add-item>
 <hr>
-<div class="row">
-<div class="list-group" style="overflow-y:auto; max-height: calc(100vh - 270px);" >
+<div class="row" style="overflow-y:auto; max-height: calc(100vh - 270px);">
+<!--<div class="list-group" style="overflow-y:auto; max-height: calc(100vh - 270px);" >-->
      <mgr-set-data-item
       *ngFor="let itemEl of items"
       [item]="itemEl"
       (itemClicked)="onItemClicked(itemEl)"></mgr-set-data-item>
-</div>
+<!--</div>-->
 </div>
 

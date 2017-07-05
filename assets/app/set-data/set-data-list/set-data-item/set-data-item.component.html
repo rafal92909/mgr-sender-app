@@ -1,9 +1,11 @@
-<a  
+<a  href="#"
   style="margin-bottom: 5px; cursor: pointer"
   class="list-group-item clearfix"
-  (click)="onClick()">
+  (click)="onClick($event)">
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ item?.name }}</h4>
     <p class="list-group-item-text">{{ item?.desc }}</p>
-  </div>
+  </div>  
+  <button type="button" class="btn btn-default btn-xs" (click)="onDelete($event)" style="float: right; top: 16px;position: relative;"><span class="glyphicon glyphicon-remove"></span></button>
 </a>
+

@@ -36,7 +36,7 @@ router.use('/', function (req, res, next) {
         });
     }
 });
-
+//////////////////////////////////////////////////////////////////////////////////// ITEM
 router.get('/get-items', function (req, res, next) {
     Item.find().exec(function (err, items) {
         if (err) {
@@ -74,22 +74,70 @@ router.post('/insert-item', function (req, res, next) {
     });
 });
 
-
-router.get('/get-data-frame-parts', function (req, res, next) {
-    DataFramePart.find({ item : req.query.itemId })
-    .populate('item', '_id')
-    .exec(function (err, dataFrameParts) {
+router.delete('/delete-item/:id', function (req, res, next) {
+    Item.findById(req.params.id, function (err, item) {
         if (err) {
             return res.status(500).json({
-                title: 'An error occured',
+                title: 'An error occurred',
                 error: err
             });
         }
-        res.status(201).json({
-            message: 'Success',
-            obj: dataFrameParts
+        if (!item) {
+            return res.status(500).json({
+                title: 'No item found!',
+                error: { message: 'Item not found' }
+            });
+        }
+
+        // DataFramePart.find({ item: item._id })
+        //     .exec(function (err, dataFrameParts) {
+        //         if (err) {
+        //             return res.status(500).json({
+        //                 title: 'An error occured',
+        //                 error: err
+        //             });
+        //         }
+        DataFramePart.remove({ item: item._id }, function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+
+            item.remove(function (err, result) {
+                if (err) {
+                    return res.status(500).json({
+                        title: 'An error occurred',
+                        error: err
+                    });
+                }
+                res.status(200).json({
+                    message: 'Deleted item',
+                    obj: result
+                });
+            });
+
         });
+        //});
     });
+});
+//////////////////////////////////////////////////////////////////////////////////// DATA PART
+router.get('/get-data-frame-parts', function (req, res, next) {
+    DataFramePart.find({ item: req.query.itemId })
+        .populate('item', '_id')
+        .exec(function (err, dataFrameParts) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occured',
+                    error: err
+                });
+            }
+            res.status(201).json({
+                message: 'Success',
+                obj: dataFrameParts
+            });
+        });
 });
 
 
@@ -114,7 +162,7 @@ router.post('/insert-data-frame-part', function (req, res, next) {
                     title: 'An error occurred',
                     error: err
                 });
-            }            
+            }
             res.status(201).json({
                 message: 'Saved message',
                 obj: result
@@ -124,5 +172,33 @@ router.post('/insert-data-frame-part', function (req, res, next) {
 
 });
 
+router.delete('/delete-data-frame-part/:id', function (req, res, next) {
+    DataFramePart.findById(req.params.id, function (err, dataFramePart) {
+        if (err) {
+            return res.status(500).json({
+                title: 'An error occurred',
+                error: err
+            });
+        }
+        if (!dataFramePart) {
+            return res.status(500).json({
+                title: 'No dataFramePart found!',
+                error: { message: 'Part of data frame not found' }
+            });
+        }
+        dataFramePart.remove(function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+            res.status(200).json({
+                message: 'Deleted part of data frame',
+                obj: result
+            });
+        });
+    });
+});
 
 module.exports = router;

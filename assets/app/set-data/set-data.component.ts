@@ -1,3 +1,4 @@
+import { SetDataServie } from './set-data.service';
 import { Item } from './../item.model';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class SetDataComponent implements OnInit {
   clickedItem: Item;
 
-  constructor() { }
+  constructor(private setDataServie: SetDataServie) { }
 
   ngOnInit() {
-  
+    this.setDataServie.resetDataDetail.subscribe(
+      () => this.clickedItem = null      
+    );
   }
 }

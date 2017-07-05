@@ -1,3 +1,4 @@
+import { SetDataServie } from './../../../set-data.service';
 import { DataFramePart } from './../data-frame.model';
 import { Component, OnInit, Input } from '@angular/core';
 
@@ -7,16 +8,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SetDataDataFramePartComponent implements OnInit {
   @Input() dataFramePart: DataFramePart;
-  constructor() { }
+  constructor(private setDataServie: SetDataServie) { }
 
   ngOnInit() {
   }
 
-  onEdit() {
-    console.log('edit');
-  }
+  // onEdit() {
+  //   console.log('edit');
+  // }
   onDelete() {
-    console.log('delete');
+    this.setDataServie.deleteDataFramePart(this.dataFramePart).subscribe(
+      result => console.log(result)
+    );
   }
 
 }
