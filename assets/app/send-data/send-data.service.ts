@@ -1,0 +1,45 @@
+import { Item } from './../item.model';
+import { ErrorServie } from './../error/error.service';
+import { Injectable, EventEmitter } from "@angular/core";
+import 'rxjs/Rx';
+import { Observable } from "rxjs";
+import { Http, Response, Headers } from "@angular/http";
+
+
+@Injectable()
+export class SendDataServie {
+    private items: Item[] = [];
+    resetDataDetail = new EventEmitter();
+
+    constructor(private http: Http, private errorService: ErrorServie) { }
+
+    resetDataDetailFunc() {
+        this.resetDataDetail.emit();
+    }
+
+    getItems() {
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.http.get('http://localhost:3000/send-data/get-items' + token)
+            .map((response: Response) => {
+                const mongoItems = response.json().obj;
+                let newItems: Item[] = [];
+                for (let item of mongoItems) {
+                    newItems.push(new Item(
+                        item.name,
+                        item.desc,
+                        item._id,
+                    ));
+                }
+                this.items = newItems;
+                return this.items;
+            })
+            .catch(
+            (error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            }
+            );
+    }
+}

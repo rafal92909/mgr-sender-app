@@ -1,0 +1,6 @@
+<div class="row" style="overflow-y:auto; max-height: calc(100vh - 270px);">
+     <mgr-send-data-item
+      *ngFor="let itemEl of items"
+      [item]="itemEl"
+      (itemClicked)="onItemClicked(itemEl)"></mgr-send-data-item>
+</div>

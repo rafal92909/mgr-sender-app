@@ -1,3 +1,7 @@
+import { SendDataServie } from './send-data/send-data.service';
+import { SendDataItemComponent } from './send-data/send-data-list/send-data-item/send-data-item.component';
+import { SendDataDetailComponent } from './send-data/send-data-detail/send-data-detail.component';
+import { SendDataListComponent } from './send-data/send-data-list/send-data-list.component';
 import { SetDataDataFramePartComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-part/set-data-data-frame-part.component';
 import { SetDataServie } from './set-data/set-data.service';
 import { SetDataAddItemComponent } from './set-data/set-data-list/set-data-add-item/set-data-add-item.component';
@@ -33,18 +37,21 @@ import { ErrorComponent } from './error/error.component';
         HeaderComponent,
         AuthenticationComponent,
         LoginComponent,
-        LogoutComponent,        
-        SetDataComponent,
-        SendDataComponent,
+        LogoutComponent,                        
         LogoComponent,
         ErrorComponent,
+        SetDataComponent,
         SetDataDetailComponent,
         SetDataListComponent,
         SetDataItemComponent,
         SetDataDataFrameComponent,
         SetDataDataFrameFormComponent,
         SetDataAddItemComponent,
-        SetDataDataFramePartComponent
+        SetDataDataFramePartComponent,
+        SendDataComponent,
+        SendDataListComponent,
+        SendDataDetailComponent,
+        SendDataItemComponent
 ],
     imports: [
         BrowserModule, 
@@ -54,7 +61,7 @@ import { ErrorComponent } from './error/error.component';
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [AuthorizeService, ErrorServie, SetDataServie],
+    providers: [AuthorizeService, ErrorServie, SetDataServie, SendDataServie],
     bootstrap: [AppComponent]
 })
 export class AppModule {
