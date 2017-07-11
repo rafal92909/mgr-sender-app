@@ -1,3 +1,4 @@
+import { SendDataDataFrameComponent } from './send-data/send-data-detail/send-data-data-frame/send-data-data-frame.component';
 import { SendDataServie } from './send-data/send-data.service';
 import { SendDataItemComponent } from './send-data/send-data-list/send-data-item/send-data-item.component';
 import { SendDataDetailComponent } from './send-data/send-data-detail/send-data-detail.component';
@@ -51,7 +52,8 @@ import { ErrorComponent } from './error/error.component';
         SendDataComponent,
         SendDataListComponent,
         SendDataDetailComponent,
-        SendDataItemComponent
+        SendDataItemComponent,
+        SendDataDataFrameComponent
 ],
     imports: [
         BrowserModule, 

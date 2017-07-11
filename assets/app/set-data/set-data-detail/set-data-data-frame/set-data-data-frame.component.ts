@@ -1,6 +1,6 @@
+import { DataFramePart } from './../../../data-frame.model';
 import { SetDataServie } from './../../set-data.service';
 import { Item } from './../../../item.model';
-import { DataFramePart } from './data-frame.model';
 import { Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';

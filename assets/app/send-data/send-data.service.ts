@@ -5,6 +5,9 @@ import 'rxjs/Rx';
 import { Observable } from "rxjs";
 import { Http, Response, Headers } from "@angular/http";
 
+// http://becausejavascript.com/node-js-event-loop/
+// https://github.com/sepmein/infiniteLoop
+// https://stackoverflow.com/questions/34824460/why-does-a-while-loop-block-the-node-event-loop
 
 @Injectable()
 export class SendDataServie {
@@ -29,7 +32,7 @@ export class SendDataServie {
                     newItems.push(new Item(
                         item.name,
                         item.desc,
-                        item._id,
+                        item._id
                     ));
                 }
                 this.items = newItems;

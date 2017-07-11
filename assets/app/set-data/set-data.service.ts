@@ -1,4 +1,4 @@
-import { DataFramePart } from './set-data-detail/set-data-data-frame/data-frame.model';
+import { DataFramePart } from './../data-frame.model';
 import { Item } from './../item.model';
 import { ErrorServie } from './../error/error.service';
 import { Injectable, EventEmitter } from "@angular/core";

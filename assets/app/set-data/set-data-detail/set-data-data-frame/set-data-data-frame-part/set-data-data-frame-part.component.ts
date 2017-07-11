@@ -1,5 +1,5 @@
+import { DataFramePart } from './../../../../data-frame.model';
 import { SetDataServie } from './../../../set-data.service';
-import { DataFramePart } from './../data-frame.model';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({

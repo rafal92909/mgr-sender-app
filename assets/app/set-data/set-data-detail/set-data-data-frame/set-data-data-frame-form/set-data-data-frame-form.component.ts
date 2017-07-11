@@ -1,4 +1,4 @@
-import { DataFramePart } from './../data-frame.model';
+import { DataFramePart } from './../../../../data-frame.model';
 import { SetDataServie } from './../../../set-data.service';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
