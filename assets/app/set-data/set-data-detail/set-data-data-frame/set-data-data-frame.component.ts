@@ -10,7 +10,8 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
   selector: 'mgr-set-data-data-frame',
   templateUrl: './set-data-data-frame.component.html'
 })
-export class SetDataDataFrameComponent implements OnInit {
+
+export class SetDataDataFrameComponent implements OnInit, OnChanges {
   @Input() item: Item;
 
   dataFrameParts: DataFramePart[];

@@ -1,14 +1,20 @@
 <div class="container" style="width: 100%">
   <article class="panel panel-default" style="margin-bottom: 5px">
     <div class="panel-body" style="height: 45px">
-      <p>{{ dataFramePart.dataFrameId }} &#123; key : {{ dataFramePart.key }}, type : {{ dataFramePart.type }}, value : {{ dataFramePart.value }} &#125;,</p>
+      <p>&#123; key : {{ dataFramePart.key }}, type : {{ dataFramePart.type }}, value : {{ dataFramePart.value }} &#125;,
+        <span class="pull-right">
+            {{ dataFramePart.dataFrameId }} 
+        </span>
+      </p>
+       
     </div>
     <footer class="panel-footer" style="text-align: right; height: 30px">      
       <div style="margin-top: -6px">
         <!--<button class="btn btn-info btn-xs" (click)="onEdit()">Edit</button>-->
         <!--<button class="btn btn-danger btn-xs" (click)="onDelete()">Delete</button>-->
+        <button type="button" class="btn btn-success btn-xs" (click)="newSetDataClick()"><span class="glyphicon glyphicon-plus"></span></button>
         <button type="button" class="btn btn-default btn-xs" (click)="onDelete()"><span class="glyphicon glyphicon-remove"></span></button>
       </div>
     </footer>
-  </article>
+  </article>  
 </div>

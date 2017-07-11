@@ -53,4 +53,25 @@ router.get('/get-items', function (req, res, next) {
     });
 });
 
+
+//////////////////////////////////////////////////////////////////////////////////// DATA PART
+router.get('/get-data-frame-parts', function (req, res, next) {
+    DataFramePart.find({ item: req.query.itemId })
+        .populate('item', '_id')
+        .exec(function (err, dataFrameParts) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occured',
+                    error: err
+                });
+            }
+            res.status(201).json({
+                message: 'Success',
+                obj: dataFrameParts
+            });
+        });
+});
+
+
+
 module.exports = router;

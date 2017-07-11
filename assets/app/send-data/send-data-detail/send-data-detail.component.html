@@ -2,12 +2,14 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">        
-        Data frame {{ item.itemId }}
+        Data frame 
+        <div class="pull-right">
+            {{ item.itemId }}
+        </div>
       </h4>
     </div>
     <div class="panel-body">
-      <!--<mgr-set-data-data-frame [item]="item"></mgr-set-data-data-frame>-->
-      data frame
+      <mgr-send-data-data-frame [item]="item"></mgr-send-data-data-frame>
     </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { DataFramePart } from './../data-frame.model';
 import { Item } from './../item.model';
 import { ErrorServie } from './../error/error.service';
 import { Injectable, EventEmitter } from "@angular/core";
@@ -12,6 +13,7 @@ import { Http, Response, Headers } from "@angular/http";
 @Injectable()
 export class SendDataServie {
     private items: Item[] = [];
+    private dataFrameParts: DataFramePart[] = [];
     resetDataDetail = new EventEmitter();
 
     constructor(private http: Http, private errorService: ErrorServie) { }
@@ -45,4 +47,33 @@ export class SendDataServie {
             }
             );
     }
+
+        getDataFramePart(itemId: String) {
+        const token = localStorage.getItem('token')
+            ? '&token=' + localStorage.getItem('token')
+            : '';
+        return this.http.get('http://localhost:3000/send-data/get-data-frame-parts?itemId=' + itemId + token)
+            .map((response: Response) => {
+                const mongoDataFrameParts = response.json().obj;
+                let newDataFrameParts: DataFramePart[] = [];
+                for (let dataFramePart of mongoDataFrameParts) {
+                    newDataFrameParts.push(new DataFramePart(
+                        dataFramePart.key,
+                        dataFramePart.type,
+                        dataFramePart.value,
+                        dataFramePart.item._id,
+                        dataFramePart._id
+                    ));
+                }
+                this.dataFrameParts = newDataFrameParts;
+                return this.dataFrameParts;
+            })
+            .catch(
+            (error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            }
+            );
+    }
+
 }

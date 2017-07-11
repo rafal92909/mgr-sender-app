@@ -22,4 +22,8 @@ export class SetDataDataFramePartComponent implements OnInit {
     );
   }
 
+  newSetDataClick() {
+    this.setDataServie.newSetData(this.dataFramePart);
+  }
+
 }

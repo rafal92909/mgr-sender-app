@@ -15,6 +15,7 @@ export class SetDataServie {
     newItem = new EventEmitter();
     newDataPart = new EventEmitter();
     resetDataDetail = new EventEmitter();
+    newSetDataEmit = new EventEmitter();
     constructor(private http: Http, private errorService: ErrorServie) { }
 
     resetDataDetailFunc() {
@@ -97,6 +98,10 @@ export class SetDataServie {
     //////////////////////////////////////////////////////////////////////////////////// DATA PART
     newDataPartClick(itemId: string) {
         this.newDataPart.emit(itemId);
+    }
+
+    newSetData(dataFramePart: DataFramePart) {
+        this.newSetDataEmit.emit(dataFramePart);
     }
 
     addNewDataFramePart(dataFramePart: DataFramePart) {
