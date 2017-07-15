@@ -45,7 +45,7 @@
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="key">Key</label>
-            <input type="text" id="key" class="form-control" name="key" formControlName="key" autofocus >
+            <input type="text" id="key" class="form-control" name="key" formControlName="key" autofocus>
           </div>
           <div class="form-group">
             <label for="type">Type</label>
@@ -55,20 +55,29 @@
                     <option value="number">Number</option>
                     <option value="decimal">Decimal</option>
                     <option value="date">Date</option>
-                    <option value="aString">Array of strings</option>
-                    <option value="aNumber">Array of numbers</option>
-                    <option value="aDecimal">Array of decimals</option>
-                    <option value="aDate">Array of dates</option>
+                    <option value="arrayOfString">Array of strings</option>
+                    <option value="arrayOfNumber">Array of numbers</option>
+                    <option value="arrayOfDecimal">Array of decimals</option>
+                    <option value="arrayOfDate">Array of dates</option>
                 </select>
           </div>
           <div class="form-group">
             <label for="value">Value</label>
             <select class="form-control" id="value" name="value" formControlName="value">
                     <option value="" selected="selected">Select a value</option>
-                    <option value="interval">Interval</option>
+                    <option value="range">Range</option>
                     <option value="set">Set</option>
                     <option value="const">Const</option>
                     <option value="getdate">getDate</option>                    
+                </select>
+          </div>
+          <div class="form-group">
+            <label for="descFramePart">Part of the Desc Frame</label>
+            <select class="form-control" id="descFramePart" name="descFramePart" formControlName="descFramePart">
+                    <option value="" selected="selected">Select a part of Desc Frame</option>
+                    <option value="id">ID</option>
+                    <option value="value">Value</option>
+                    <option value="date">Date</option>                    
                 </select>
           </div>
           <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid">Submit</button>

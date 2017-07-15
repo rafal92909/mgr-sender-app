@@ -2,10 +2,7 @@ import { SetDataServie } from './../../../set-data.service';
 import { DataFramePart } from './../../../../data-frame.model';
 import { Component, OnInit, Input, ViewChild, ElementRef  } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Validators, FormGroup, FormControl, FormArray, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'mgr-set-data-data-frame-part-form',
@@ -20,41 +17,49 @@ import { ReactiveFormsModule } from '@angular/forms';
             height: 100vh;
             z-index: 1;
         }
-  `]  
+  `]
 })
 export class SetDataDataFramePartFormComponent implements OnInit {
+  myForm: FormGroup;
+  elements = [];
   dataFramePart: DataFramePart;
   display = 'none';
-  html = '';  
-  @ViewChild('dataContainer') dataContainer: ElementRef;
 
-  constructor(private setDataServie: SetDataServie) {}
+  constructor(private setDataServie: SetDataServie, private formBuilder: FormBuilder) { }
 
   onCloseClick() {
     this.display = 'none';
+    this.myForm.reset();
   }
   // https://embed.plnkr.co/aWTZswhBnUVLg7qyDr83/
   ngOnInit() {
-    // this.myForm = new FormGroup({
-    //   name: new FormControl(null, Validators.required),
-    //   desc: new FormControl(null, Validators.required)
-    // });
+    this.myForm = new FormGroup({ });        
     
     this.setDataServie.newSetDataEmit.subscribe(
       (dataFramePart) => {
+        this.elements = [];
+        this.myForm = new FormGroup({ });        
         this.dataFramePart = dataFramePart;
-        this.display = 'block';        
-        this.html = '<input type="text" id="desc" class="form-control" formControlName="desc" #i><button class="btn btn-primary" type="submit" (click)="onSubmit(i)">Submit</button>';
-        this.dataContainer.nativeElement.innerHTML = this.html;
-        //document.getElementById("formId").innerHTML = this.html;
+        this.display = 'block';
       }
     );
 
+  }  
+
+  addAddress() {
+    this.elements.push('name');
+    this.elements.push('myNewControl');    
+    this.myForm = new FormGroup({
+        name: new FormControl(null, Validators.required),
+        myNewControl: new FormControl(null, Validators.required)
+    });  
   }
 
-  onSubmit(form) {
-    console.log(form);
-    this.onCloseClick();
+  onSubmit() {
+    for(let element of this.elements) {
+      console.log(element + ': ' + this.myForm.controls[element].value);
+    }    
+     this.onCloseClick();    
   }
 
 

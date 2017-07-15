@@ -8,25 +8,18 @@
       </div>
       <div class="modal-body">
 
-        <!-- <form [formGroup]="myForm" (ngSubmit)="onSubmit(f.value)" #f="ngForm">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" class="form-control" formControlName="name">
-          </div>
-          <div class="form-group" id="descDiv">
-            <label for="desc">Description</label>
-            <input type="text" id="desc" class="form-control" formControlName="desc">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <div class="form-group" *ngFor="let element of elements;">
+            <label [for]="element">{{ element }}</label>
+            <input type="text" [id]="element" class="form-control" [formControlName]="element">
           </div>
           <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid">Submit</button>
-        </form> -->
+        </form>
 
-          <div id="formId" #dataContainer>
-
-          </div>
-          <!-- <button class="btn btn-primary" type="submit" (click)="onSubmit(i)">Submit</button> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="onCloseClick()">Close</button>
+        <button type="button" class="btn btn-default" (click)="addAddress()">addAddress</button>
       </div>
     </div>
     <!-- /.modal-content -->

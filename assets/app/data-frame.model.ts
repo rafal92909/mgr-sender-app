@@ -4,5 +4,6 @@ export class DataFramePart {
         public type: string, 
         public value: string, 
         public itemId: string,
+        public descFramePart: string, 
         public dataFrameId?: string) {}
 }

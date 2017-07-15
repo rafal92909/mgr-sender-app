@@ -153,6 +153,7 @@ router.post('/insert-data-frame-part', function (req, res, next) {
             key: req.body.key,
             type: req.body.type,
             value: req.body.value,
+            descFramePart: req.body.descFramePart,
             item: item
         });
 

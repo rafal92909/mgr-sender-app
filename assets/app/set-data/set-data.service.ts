@@ -118,6 +118,7 @@ export class SetDataServie {
                     result.obj.type,
                     result.obj.value,
                     result.obj.itemId,
+                    result.obj.descFramePart,
                     result.obj._id
                 )
                 this.dataFrameParts.push(dfp);
@@ -145,6 +146,7 @@ export class SetDataServie {
                         dataFramePart.type,
                         dataFramePart.value,
                         dataFramePart.item._id,
+                        dataFramePart.descFramePart,
                         dataFramePart._id
                     ));
                 }

@@ -35,6 +35,7 @@ export class SetDataDataFrameFormComponent implements OnInit {
       this.myForm.value.type,
       this.myForm.value.value,
       this.itemId,
+      this.myForm.value.descFramePart,
       'dataFramePartID'
     );
     this.display = 'none';
@@ -50,7 +51,8 @@ export class SetDataDataFrameFormComponent implements OnInit {
     this.myForm = new FormGroup({
       key: new FormControl(null, Validators.required),
       type: new FormControl(null, Validators.required),
-      value: new FormControl(null, Validators.required)
+      value: new FormControl(null, Validators.required),
+      descFramePart: new FormControl(null, Validators.required)
     });
     this.setDataServie.newDataPart.subscribe(
       (itemId) => {
