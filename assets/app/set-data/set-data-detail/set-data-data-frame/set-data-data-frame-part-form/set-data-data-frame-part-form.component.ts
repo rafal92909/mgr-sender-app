@@ -25,7 +25,6 @@ export class SetDataDataFramePartFormComponent implements OnInit {
   dataFramePart: DataFramePart;
   display = 'none';
   showForm = true;
-  fw = 600;
 
   constructor(private setDataServie: SetDataServie, private formBuilder: FormBuilder) { }
 
@@ -105,7 +104,6 @@ export class SetDataDataFramePartFormComponent implements OnInit {
         this.showDialogWindow();
       }
     );
-
   }
 
   onSubmit() {
@@ -125,10 +123,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
         this.onCloseClick(); 
       }
     );
-
   }
-
-
 }
 
 
