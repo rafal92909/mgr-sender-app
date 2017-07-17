@@ -50,9 +50,9 @@ export class SetDataDataFrameFormComponent implements OnInit {
   ngOnInit() {
     this.myForm = new FormGroup({
       key: new FormControl(null, Validators.required),
-      type: new FormControl(null, Validators.required),
-      value: new FormControl(null, Validators.required),
-      descFramePart: new FormControl(null, Validators.required)
+      type: new FormControl("", Validators.required),
+      value: new FormControl("", Validators.required),
+      descFramePart: new FormControl("", Validators.required)
     });
     this.setDataServie.newDataPart.subscribe(
       (itemId) => {

@@ -4,6 +4,7 @@ var router = express.Router();
 var fs = require("fs");
 var Item = require('../models/item');
 var DataFramePart = require('../models/data-frame-part');
+var DataFrameValue = require('../models/data-frame-value');
 
 router.use('/', function (req, res, next) {
     if (req.url == "/") {
@@ -200,6 +201,26 @@ router.delete('/delete-data-frame-part/:id', function (req, res, next) {
             });
         });
     });
+});
+
+router.post('/insert-data-frame-value', function (req, res, next) {
+    try {        
+        console.log('start');
+        new DataFrameValue(req.body).save(function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+            res.status(201).json({
+                message: 'Saved data frame part value',
+                obj: result
+            });
+        });
+    } catch (e) {
+        console.log(e);
+    }
 });
 
 module.exports = router;

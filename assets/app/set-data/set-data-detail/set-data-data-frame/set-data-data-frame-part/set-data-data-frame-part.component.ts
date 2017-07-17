@@ -9,13 +9,14 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SetDataDataFramePartComponent implements OnInit {
   @Input() dataFramePart: DataFramePart;
   constructor(private setDataServie: SetDataServie) { }
+  showSetDataButton = true;
 
   ngOnInit() {
+    if (this.dataFramePart.value == "getdate") {
+      this.showSetDataButton = false;
+    }
   }
 
-  // onEdit() {
-  //   console.log('edit');
-  // }
   onDelete() {
     this.setDataServie.deleteDataFramePart(this.dataFramePart).subscribe(
       result => console.log(result)

@@ -1,9 +1,9 @@
 <div class="container" style="width: 100%">
   <article class="panel panel-default" style="margin-bottom: 5px">
     <div class="panel-body" style="height: 45px">
-      <p>&#123; key : {{ dataFramePart.key }}, type : {{ dataFramePart.type }}, value : {{ dataFramePart.value }}, desc frame part : {{ dataFramePart.descFramePart }} &#125;,
+      <p>&#123; key : {{ dataFramePart.key }}, type : {{ dataFramePart.type }}, value : {{ dataFramePart.value }}, descFramePart : {{ dataFramePart.descFramePart }} &#125;,
         <span class="pull-right">
-            {{ dataFramePart.dataFrameId }} 
+            {{ dataFramePart.dataFramePartId }} 
         </span>
       </p>
        
@@ -12,7 +12,7 @@
       <div style="margin-top: -6px">
         <!--<button class="btn btn-info btn-xs" (click)="onEdit()">Edit</button>-->
         <!--<button class="btn btn-danger btn-xs" (click)="onDelete()">Delete</button>-->
-        <button type="button" class="btn btn-success btn-xs" (click)="newSetDataClick()"><span class="glyphicon glyphicon-plus"></span></button>
+        <button *ngIf="showSetDataButton" type="button" class="btn btn-success btn-xs" (click)="newSetDataClick()"><span class="glyphicon glyphicon-plus"></span></button>
         <button type="button" class="btn btn-default btn-xs" (click)="onDelete()"><span class="glyphicon glyphicon-remove"></span></button>
       </div>
     </footer>

@@ -5,5 +5,5 @@ export class DataFramePart {
         public value: string, 
         public itemId: string,
         public descFramePart: string, 
-        public dataFrameId?: string) {}
+        public dataFramePartId?: string) {}
 }

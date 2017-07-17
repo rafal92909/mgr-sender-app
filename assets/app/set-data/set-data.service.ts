@@ -166,12 +166,29 @@ export class SetDataServie {
         const token = localStorage.getItem('token')
             ? '?token=' + localStorage.getItem('token')
             : '';
-        return this.http.delete('http://localhost:3000/set-data/delete-data-frame-part/' + dataFramePart.dataFrameId + token)
+        return this.http.delete('http://localhost:3000/set-data/delete-data-frame-part/' + dataFramePart.dataFramePartId + token)
             .map((response: Response) => response.json())
             .catch((error: Response) => {
                 this.errorService.handleError(error.json());
                 return Observable.throw(error.json());
             });
     }
+
+    newDataFrameValue(jsonObject) {
+        const body = jsonObject;
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.http.post('http://localhost:3000/set-data/insert-data-frame-value' + token, body, { headers: headers })
+            .map((response: Response) => response.json())
+            .catch(
+            (error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            }
+            );
+    }
+
 
 }
