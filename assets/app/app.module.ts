@@ -1,6 +1,4 @@
 import { SetDataDataFramePartFormComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-part-form/set-data-data-frame-part-form.component';
-import { SendDataDataFramePartComponent } from './send-data/send-data-detail/send-data-data-frame/send-data-data-frame-part/send-data-data-frame-part.component';
-import { SendDataDataFrameComponent } from './send-data/send-data-detail/send-data-data-frame/send-data-data-frame.component';
 import { SendDataServie } from './send-data/send-data.service';
 import { SendDataItemComponent } from './send-data/send-data-list/send-data-item/send-data-item.component';
 import { SendDataDetailComponent } from './send-data/send-data-detail/send-data-detail.component';
