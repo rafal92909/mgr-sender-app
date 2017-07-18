@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './send-data-detail.component.html'
 })
 export class SendDataDetailComponent implements OnInit {
-  @Input() item: Item;
+  //@Input() item: Item;
   constructor() { }
 
   ngOnInit() {

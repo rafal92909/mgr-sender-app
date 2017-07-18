@@ -54,10 +54,8 @@ import { ErrorComponent } from './error/error.component';
         SetDataDataFramePartFormComponent,
         SendDataComponent,
         SendDataListComponent,
-        SendDataDetailComponent,
         SendDataItemComponent,
-        SendDataDataFrameComponent,
-        SendDataDataFramePartComponent        
+        SendDataDetailComponent
 ],
     imports: [
         BrowserModule, 

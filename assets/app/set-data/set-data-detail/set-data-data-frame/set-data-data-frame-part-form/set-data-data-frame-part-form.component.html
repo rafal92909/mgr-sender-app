@@ -11,7 +11,8 @@
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()" *ngIf="showForm">
           <div class="form-group" *ngFor="let element of elements;">
             <label [for]="element.id" [ngStyle]="{ 'font-weight' : element.fontWeight }">{{ element.label }}</label>
-            <input type="text" [id]="element.id" class="form-control" [formControlName]="element.id">
+            <!-- type="text" -->
+            <input [type]="element.type" [id]="element.id" class="form-control" [formControlName]="element.id">
           </div>
           <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid">Submit</button>
         </form>

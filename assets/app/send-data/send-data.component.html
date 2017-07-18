@@ -5,14 +5,14 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-7">
-    <!--<mgr-send-data-detail></mgr-send-data-detail>-->
-    <mgr-send-data-detail  *ngIf="clickedItem; else showText" [item]="clickedItem"></mgr-send-data-detail>
-    <ng-template #showText>
+    <mgr-send-data-detail></mgr-send-data-detail>
+    <!-- <mgr-send-data-detail  *ngIf="clickedItem; else showText" [item]="clickedItem"></mgr-send-data-detail> -->
+    <!-- <ng-template #showText>
       <div class="row">
         <div class="alert alert-info">
           <strong>Please select an Item!</strong>
         </div>
       </div>
-    </ng-template>
+    </ng-template> -->
   </div>
 </div>

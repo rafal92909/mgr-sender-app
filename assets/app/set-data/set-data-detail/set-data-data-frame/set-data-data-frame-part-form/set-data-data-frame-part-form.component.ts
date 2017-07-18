@@ -60,7 +60,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               this.myForm = new FormGroup({
                 'value': new FormControl(value, Validators.required)
               });
-              let formElement = new FormElements('value', 'Const value', 700);
+              let formElement = new FormElements('value', 'Const value', 700, 'text');
               this.elements.push(formElement);
             }
 
@@ -71,6 +71,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
             if (this.dataFramePart.value == "range") {
               let valueMin = null;
               let valueMax = null;
+              let precision = null;
               let randomInterval = null;
               let warningMin = null;
               let warningMax = null;
@@ -83,6 +84,9 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 }
                 if (jsonObject.hasOwnProperty('valueMax')) {
                   valueMax = jsonObject['valueMax'];
+                }
+                if (jsonObject.hasOwnProperty('precision')) {
+                  randomInterval = jsonObject['precision'];
                 }
                 if (jsonObject.hasOwnProperty('randomInterval')) {
                   randomInterval = jsonObject['randomInterval'];
@@ -103,6 +107,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               this.myForm = new FormGroup({
                 'valueMin': new FormControl(valueMin, Validators.required),
                 'valueMax': new FormControl(valueMax, Validators.required),
+                'precision': new FormControl(precision, Validators.required),
                 'randomInterval': new FormControl(randomInterval, Validators.required),
                 'warningMin': new FormControl(warningMin),
                 'warningMax': new FormControl(warningMax),
@@ -111,13 +116,14 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               });
 
               this.elements.push(
-                new FormElements('valueMin', 'Minimum value', 700),
-                new FormElements('valueMax', 'Maximum value', 700),
-                new FormElements('randomInterval', 'Random interval', 700),
-                new FormElements('warningMin', 'Minimum warning value', 300),
-                new FormElements('warningMax', 'Maximum warning value', 300),
-                new FormElements('criticalMin', 'Minimum critical value', 300),
-                new FormElements('criticalMax', 'Maximum critical value', 300)
+                new FormElements('valueMin', 'Minimum value', 700, 'number'),
+                new FormElements('valueMax', 'Maximum value', 700, 'number'),
+                new FormElements('precision', 'Precisin', 700, 'number'),
+                new FormElements('randomInterval', 'Random interval', 700, 'number'),
+                new FormElements('warningMin', 'Minimum warning value', 300, 'number'),
+                new FormElements('warningMax', 'Maximum warning value', 300, 'number'),
+                new FormElements('criticalMin', 'Minimum critical value', 300, 'number'),
+                new FormElements('criticalMax', 'Maximum critical value', 300, 'number')
               );
               // if number - ile miejsc po przecinku (precision)
               // if value - opis
@@ -165,11 +171,11 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               });
 
               this.elements.push(
-                new FormElements('values', 'Set of values (use comma as separator)', 700),
-                new FormElements('warningMin', 'Minimum warning value', 300),
-                new FormElements('warningMax', 'Maximum warning value', 300),
-                new FormElements('criticalMin', 'Minimum critical value', 300),
-                new FormElements('criticalMax', 'Maximum critical value', 300)
+                new FormElements('values', 'Set of values (use comma as separator)', 700, 'text'),
+                new FormElements('warningMin', 'Minimum warning value', 300, 'text'),
+                new FormElements('warningMax', 'Maximum warning value', 300, 'text'),
+                new FormElements('criticalMin', 'Minimum critical value', 300, 'text'),
+                new FormElements('criticalMax', 'Maximum critical value', 300, 'text')
               );
             }
 
@@ -204,11 +210,10 @@ export class SetDataDataFramePartFormComponent implements OnInit {
       }
     }
     jsonString += '"dataFramePartId" : "' + this.dataFramePart.dataFramePartId + '" }';
-
-    console.log(jsonString);
+    
     this.setDataServie.newDataFrameValue(jsonString).subscribe(
       result => {
-        console.log(result);
+        //console.log(result);
         this.onCloseClick();
       }
     );
@@ -225,5 +230,6 @@ export class FormElements {
   constructor(
     public id: string,
     public label: string,
-    public fontWeight: number) { }
+    public fontWeight: number,
+    public type: string) { }
 }
