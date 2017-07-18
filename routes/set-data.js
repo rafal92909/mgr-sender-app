@@ -207,18 +207,52 @@ router.delete('/delete-data-frame-part/:id', function (req, res, next) {
 
 router.post('/insert-data-frame-value', function (req, res, next) {
     req.body.dataFramePartId = mongoose.Types.ObjectId(req.body.dataFramePartId);
-    new DataFrameValue(req.body).save(function (err, result) {
+
+    DataFrameValue.remove({ dataFramePartId: req.body.dataFramePartId }, function (err, result) {
         if (err) {
             return res.status(500).json({
                 title: 'An error occurred',
                 error: err
             });
         }
-        res.status(201).json({
-            message: 'Saved data frame part value',
-            obj: result
+        new DataFrameValue(req.body).save(function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+            res.status(201).json({
+                message: 'Saved data frame part value',
+                obj: result
+            });
         });
     });
+});
+
+
+router.get('/get-data-frame-value', function (req, res, next) {
+    let dataFramePartIdObject = mongoose.Types.ObjectId(req.query.dataFramePartId);
+    DataFrameValue.find({ dataFramePartId: dataFramePartIdObject })
+        .exec(function (err, dataFrameValue) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occured',
+                    error: err
+                });
+            }
+            if (dataFrameValue.length > 0) {
+                res.status(201).json({
+                    message: 'Success',
+                    obj: dataFrameValue[dataFrameValue.length - 1]._doc
+                });
+            } else {
+                res.status(201).json({
+                    message: 'Success',
+                    obj: null
+                });
+            }
+        });
 });
 
 module.exports = router;

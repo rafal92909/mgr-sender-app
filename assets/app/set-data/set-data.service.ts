@@ -190,5 +190,22 @@ export class SetDataServie {
             );
     }
 
+    getDataFrameValue(dataFramePartId) {
+        const token = localStorage.getItem('token')
+            ? '&token=' + localStorage.getItem('token')
+            : '';
+        return this.http.get('http://localhost:3000/set-data/get-data-frame-value?dataFramePartId=' + dataFramePartId + token)
+            .map((response: Response) => {
+                const dataFrameValues = response.json().obj;
+                return dataFrameValues;
+            })
+            .catch(
+            (error: Response) => {
+                this.errorService.handleError(error.json());
+                return Observable.throw(error.json())
+            }
+            );
+    }
+
 
 }
