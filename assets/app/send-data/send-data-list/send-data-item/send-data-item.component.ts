@@ -20,4 +20,11 @@ export class SendDataItemComponent implements OnInit {
     this.itemClicked.emit();
   }
 
+  onGenerate(event) {
+    event.preventDefault();
+    this.sendDataServie.generateFrames(this.item).subscribe(
+      result => console.log(result)
+    );
+  }
+
 }

@@ -4,6 +4,8 @@ var router = express.Router();
 var fs = require("fs");
 var Item = require('../models/item');
 var DataFramePart = require('../models/data-frame-part');
+var DataFrameValue = require('../models/data-frame-value');
+var mongoose = require('mongoose');
 
 router.use('/', function (req, res, next) {
     if (req.url == "/") {
@@ -73,5 +75,40 @@ router.get('/get-data-frame-parts', function (req, res, next) {
 });
 
 
+//////////////////////////////////////////////////////////////////////////////////// GENERATE FRAMES
+router.post('/generate-frames', function (req, res, next) {
+    let itemId = req.body.itemId;
+    itemId = mongoose.Types.ObjectId(itemId);
+
+    DataFramePart.find({ item: req.body.itemId })
+        .exec(function (err, dataFrameParts) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occured',
+                    error: err
+                });
+            }
+
+            var dfIDs;
+            dfIDs = dataFrameParts.map(function (df) {
+                return df._id;
+            });
+
+            DataFrameValue.find({ dataFramePartId: { $in: dfIDs } })
+                .exec(function (err, dataFrameValues) {
+                    if (err) {
+                        return res.status(500).json({
+                            title: 'An error occured',
+                            error: err
+                        });
+                    }
+                    res.status(201).json({
+                        message: 'Success',
+                        obj: dataFrameValues
+                    });
+
+                });
+        });
+});
 
 module.exports = router;

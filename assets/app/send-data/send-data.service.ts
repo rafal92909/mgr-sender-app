@@ -48,26 +48,15 @@ export class SendDataServie {
             );
     }
 
-        getDataFramePart(itemId: String) {
+    generateFrames(item: Item) {
+        const body = JSON.stringify(item);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = localStorage.getItem('token')
-            ? '&token=' + localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
             : '';
-        return this.http.get('http://localhost:3000/send-data/get-data-frame-parts?itemId=' + itemId + token)
-            .map((response: Response) => {
-                const mongoDataFrameParts = response.json().obj;
-                let newDataFrameParts: DataFramePart[] = [];
-                for (let dataFramePart of mongoDataFrameParts) {
-                    newDataFrameParts.push(new DataFramePart(
-                        dataFramePart.key,
-                        dataFramePart.type,
-                        dataFramePart.value,
-                        dataFramePart.item._id,
-                        dataFramePart._id
-                    ));
-                }
-                this.dataFrameParts = newDataFrameParts;
-                return this.dataFrameParts;
-            })
+
+        return this.http.post('http://localhost:3000/send-data/generate-frames' + token, body, { headers: headers })
+            .map((response: Response) => response.json())
             .catch(
             (error: Response) => {
                 this.errorService.handleError(error.json());
@@ -75,5 +64,6 @@ export class SendDataServie {
             }
             );
     }
+
 
 }
