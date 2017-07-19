@@ -51,17 +51,33 @@ export class SetDataDataFramePartFormComponent implements OnInit {
             this.dataFramePart = dataFramePart;
 
             if (this.dataFramePart.value == "const") {
+
+              let desc = null;
               let value = null;
               if (jsonObject != null) {
+                if (jsonObject.hasOwnProperty('desc')) {
+                  desc = jsonObject['desc'];
+                }
                 if (jsonObject.hasOwnProperty('value')) {
                   value = jsonObject['value'];
                 }
               }
-              this.myForm = new FormGroup({
-                'value': new FormControl(value, Validators.required)
-              });
-              let formElement = new FormElements('value', 'Const value', 700, 'text');
-              this.elements.push(formElement);
+              if (this.dataFramePart.descFramePart == 'value') {
+                this.myForm = new FormGroup({
+                  'desc': new FormControl(desc, Validators.required),
+                  'value': new FormControl(value, Validators.required)
+                });
+                this.elements.push(
+                  new FormElements('desc', 'Description', 700, 'text'),
+                  new FormElements('value', 'Const value', 700, 'text')
+                );
+              } else {
+                this.myForm = new FormGroup({
+                  'value': new FormControl(value, Validators.required)
+                });
+                this.elements.push(new FormElements('value', 'Const value', 700, 'text'));
+              }
+
             }
 
             if (this.dataFramePart.value == "getdate") {
@@ -69,6 +85,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
             }
 
             if (this.dataFramePart.value == "range") {
+              let desc = null;
               let valueMin = null;
               let valueMax = null;
               let precision = null;
@@ -79,11 +96,17 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               let criticalMax = null;
 
               if (jsonObject != null) {
+                if (jsonObject.hasOwnProperty('desc')) {
+                  desc = jsonObject['desc'];
+                }
                 if (jsonObject.hasOwnProperty('valueMin')) {
                   valueMin = jsonObject['valueMin'];
                 }
                 if (jsonObject.hasOwnProperty('valueMax')) {
                   valueMax = jsonObject['valueMax'];
+                }
+                if (jsonObject.hasOwnProperty('precision')) {
+                  precision = jsonObject['precision'];
                 }
                 if (jsonObject.hasOwnProperty('precision')) {
                   randomInterval = jsonObject['precision'];
@@ -104,17 +127,6 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   criticalMax = jsonObject['criticalMax'];
                 }
               }
-              this.myForm = new FormGroup({
-                'valueMin': new FormControl(valueMin, Validators.required),
-                'valueMax': new FormControl(valueMax, Validators.required),
-                'precision': new FormControl(precision, Validators.required),
-                'randomInterval': new FormControl(randomInterval, Validators.required),
-                'warningMin': new FormControl(warningMin),
-                'warningMax': new FormControl(warningMax),
-                'criticalMin': new FormControl(criticalMin),
-                'criticalMax': new FormControl(criticalMax)
-              });
-
               this.elements.push(
                 new FormElements('valueMin', 'Minimum value', 700, 'number'),
                 new FormElements('valueMax', 'Maximum value', 700, 'number'),
@@ -125,18 +137,43 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 new FormElements('criticalMin', 'Minimum critical value', 300, 'number'),
                 new FormElements('criticalMax', 'Maximum critical value', 300, 'number')
               );
-              // if number - ile miejsc po przecinku (precision)
-              // if value - opis
+              if (this.dataFramePart.descFramePart == 'value') {
+                this.elements.unshift(new FormElements('desc', 'Description', 300, 'text'));
+
+                this.myForm = new FormGroup({
+                  'desc': new FormControl(desc, Validators.required),
+                  'valueMin': new FormControl(valueMin, Validators.required),
+                  'valueMax': new FormControl(valueMax, Validators.required),
+                  'precision': new FormControl(precision, Validators.required),
+                  'randomInterval': new FormControl(randomInterval, Validators.required),
+                  'warningMin': new FormControl(warningMin),
+                  'warningMax': new FormControl(warningMax),
+                  'criticalMin': new FormControl(criticalMin),
+                  'criticalMax': new FormControl(criticalMax)
+                });
+              } else {
+                this.myForm = new FormGroup({
+                  'valueMin': new FormControl(valueMin, Validators.required),
+                  'valueMax': new FormControl(valueMax, Validators.required),
+                  'precision': new FormControl(precision, Validators.required),
+                  'randomInterval': new FormControl(randomInterval, Validators.required),
+                  'warningMin': new FormControl(warningMin),
+                  'warningMax': new FormControl(warningMax),
+                  'criticalMin': new FormControl(criticalMin),
+                  'criticalMax': new FormControl(criticalMax)
+                });
+              }              
             }
 
             if (this.dataFramePart.value == "set") {
+              let desc = null;
               let values = null;
               let warningMin = null;
               let warningMax = null;
               let criticalMin = null;
               let criticalMax = null;
               if (jsonObject != null) {
-                values = '';                
+                values = '';
                 for (let key in Object.keys(jsonObject)) {
                   if (Object.keys(jsonObject)[key].startsWith('value')) {
                     values = ', ' + jsonObject[Object.keys(jsonObject)[key]] + values;
@@ -148,7 +185,9 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 } else {
                   values = values.substr(2);
                 }
-
+                if (jsonObject.hasOwnProperty('desc')) {
+                  desc = jsonObject['desc'];
+                }
                 if (jsonObject.hasOwnProperty('warningMin')) {
                   warningMin = jsonObject['warningMin'];
                 }
@@ -162,13 +201,6 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   criticalMax = jsonObject['criticalMax'];
                 }
               }
-              this.myForm = new FormGroup({
-                'values': new FormControl(values, Validators.required),
-                'warningMin': new FormControl(warningMin),
-                'warningMax': new FormControl(warningMax),
-                'criticalMin': new FormControl(criticalMin),
-                'criticalMax': new FormControl(criticalMax)
-              });
 
               this.elements.push(
                 new FormElements('values', 'Set of values (use comma as separator)', 700, 'text'),
@@ -177,6 +209,29 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 new FormElements('criticalMin', 'Minimum critical value', 300, 'text'),
                 new FormElements('criticalMax', 'Maximum critical value', 300, 'text')
               );
+
+              if (this.dataFramePart.descFramePart == 'value') {
+                this.elements.unshift(new FormElements('desc', 'Description', 300, 'text'));
+
+                this.myForm = new FormGroup({
+                  'desc': new FormControl(desc, Validators.required),
+                  'values': new FormControl(values, Validators.required),
+                  'warningMin': new FormControl(warningMin),
+                  'warningMax': new FormControl(warningMax),
+                  'criticalMin': new FormControl(criticalMin),
+                  'criticalMax': new FormControl(criticalMax)
+                });
+
+              } else {
+                this.myForm = new FormGroup({
+                  'values': new FormControl(values, Validators.required),
+                  'warningMin': new FormControl(warningMin),
+                  'warningMax': new FormControl(warningMax),
+                  'criticalMin': new FormControl(criticalMin),
+                  'criticalMax': new FormControl(criticalMax)
+                });
+
+              }
             }
 
             this.showDialogWindow();
@@ -210,7 +265,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
       }
     }
     jsonString += '"dataFramePartId" : "' + this.dataFramePart.dataFramePartId + '" }';
-    
+
     this.setDataServie.newDataFrameValue(jsonString).subscribe(
       result => {
         //console.log(result);
