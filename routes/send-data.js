@@ -10,6 +10,36 @@ var InfiniteLoop = require('infinite-loop');
 
 var ilArray = [];
 var iFunc = 0;
+
+
+// ///////////////////////////////////////////////////////////////////////////////////////////////////// SOCKET.IO
+
+let http = require('http').Server(express);
+let io = require('socket.io')(http);
+
+io.on('connection', (socket) => {
+  console.log('connected to socket');
+  
+  socket.on('disconnect', function(){
+    console.log('disconnected from socked');
+  });
+  
+  socket.on('add-message', (message) => {
+    io.emit('message', {type:'new-message', text: message});    
+  });
+});
+
+http.listen(5000, () => {
+  console.log('started on port 5000');
+});
+
+
+// // http://www.syntaxsuccess.com/viewarticle/socket.io-with-rxjs-in-angular-2.0
+
+// ///////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+
 router.use('/', function (req, res, next) {
     if (req.url == "/") {
         return res.render('index');
@@ -162,6 +192,7 @@ router.post('/generate-frames', function (req, res, next) {
 
 function ilTestFunc(t1, i) {    
     console.log(t1 + ' ' + i);
+    io.emit('message', {type:'new-message', text: t1});
 }
 
 module.exports = router;

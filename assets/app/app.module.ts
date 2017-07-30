@@ -1,3 +1,4 @@
+import { ChatService } from './send-data/send-data-detail/chat.service';
 import { SetDataDataFramePartFormComponent } from './set-data/set-data-detail/set-data-data-frame/set-data-data-frame-part-form/set-data-data-frame-part-form.component';
 import { SendDataServie } from './send-data/send-data.service';
 import { SendDataItemComponent } from './send-data/send-data-list/send-data-item/send-data-item.component';
@@ -63,7 +64,7 @@ import { ErrorComponent } from './error/error.component';
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [AuthorizeService, ErrorServie, SetDataServie, SendDataServie],
+    providers: [AuthorizeService, ErrorServie, SetDataServie, SendDataServie, ChatService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

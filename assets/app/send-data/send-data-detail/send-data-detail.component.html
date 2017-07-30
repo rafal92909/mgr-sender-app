@@ -1,12 +1,17 @@
 <div class="row" style="overflow-y:auto; max-height: calc(100vh - 195px);">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 class="panel-title">        
-        Data frames         
+      <h4 class="panel-title">
+        Data frames
       </h4>
     </div>
-    <div class="panel-body">
-      <p>tutaj wyswietle dodane ramki z danymi</p>
+    <div class="container" style="width: 100%; margin-bottom: 5px; margin-top: 10px">
+      <article class="panel panel-default" style="margin-bottom: 5px;" *ngFor="let message of messages">
+        <div class="panel-body">
+          <p>{{ message.text }}</p>
+        </div>
+      </article>
     </div>
+
   </div>
 </div>
