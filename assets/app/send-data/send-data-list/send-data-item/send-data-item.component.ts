@@ -10,6 +10,7 @@ export class SendDataItemComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemClicked = new EventEmitter<void>();
+  spanClass = "glyphicon glyphicon-play";
   constructor(private sendDataServie: SendDataServie) { }
 
   ngOnInit() {
@@ -22,6 +23,11 @@ export class SendDataItemComponent implements OnInit {
 
   onGenerate(event) {
     event.preventDefault();
+    if (this.item.il == null || this.item.il == false) {
+      this.item.il = true;
+    } else {
+      this.item.il = false;
+    }
     this.sendDataServie.generateFrames(this.item).subscribe(
       result => console.log(result)
     );

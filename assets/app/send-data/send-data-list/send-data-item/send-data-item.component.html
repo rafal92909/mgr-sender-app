@@ -6,6 +6,7 @@
     <h4 class="list-group-item-heading">{{ item?.name }}</h4>
     <p class="list-group-item-text">{{ item?.desc }}</p>
   </div>  
-  <button type="button" class="btn btn-default btn-xs" (click)="onGenerate($event)" style="float: right; top: 16px;position: relative;"><span class="glyphicon glyphicon-play"></span></button>
+  <button *ngIf="!item?.il" type="button" class="btn btn-default btn-xs" (click)="onGenerate($event)" style="float: right; top: 16px;position: relative;"><span class="glyphicon glyphicon-play"></span></button>
+  <button *ngIf="item?.il" type="button" class="btn btn-default btn-xs" (click)="onGenerate($event)" style="float: right; top: 16px;position: relative;"><span class="glyphicon glyphicon-pause"></span></button>
 </a>
 

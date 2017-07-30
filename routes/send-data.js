@@ -6,7 +6,10 @@ var Item = require('../models/item');
 var DataFramePart = require('../models/data-frame-part');
 var DataFrameValue = require('../models/data-frame-value');
 var mongoose = require('mongoose');
+var InfiniteLoop = require('infinite-loop');
 
+var ilArray = [];
+var iFunc = 0;
 router.use('/', function (req, res, next) {
     if (req.url == "/") {
         return res.render('index');
@@ -48,6 +51,22 @@ router.get('/get-items', function (req, res, next) {
                 error: err
             });
         }
+
+        if (items != null && items.length > 0) {
+            console.log('');
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                let itemId = item._doc._id.toString();
+                if (ilArray[itemId] != null) {
+                    item._doc['il'] = true;
+                } else {
+                    item._doc['il'] = false;
+                }
+                items[i] = item;
+            }
+
+        }
+
         res.status(201).json({
             message: 'Success',
             obj: items
@@ -77,8 +96,8 @@ router.get('/get-data-frame-parts', function (req, res, next) {
 
 //////////////////////////////////////////////////////////////////////////////////// GENERATE FRAMES
 router.post('/generate-frames', function (req, res, next) {
-    let itemId = req.body.itemId;
-    itemId = mongoose.Types.ObjectId(itemId);
+    let itemIdStr = req.body.itemId;    
+    let itemId = mongoose.Types.ObjectId(itemIdStr);
 
     DataFramePart.find({ item: req.body.itemId })
         .exec(function (err, dataFrameParts) {
@@ -102,6 +121,35 @@ router.post('/generate-frames', function (req, res, next) {
                             error: err
                         });
                     }
+
+                    // console.log(dataFrameParts);
+                    // console.log(dataFrameValues);
+                    
+                    if (ilArray[itemIdStr] != null) { // element istnieje - stop i usun element
+                        ilArray[itemIdStr].stop();
+                        ilArray[itemIdStr] = null;
+                        // let index = ilArray.indexOf(ilArray[itemIdStr]);
+                        // if (index > -1) {
+                        //     ilArray.splice(index, 1);
+                        //     iFunc--;
+                        // }
+                    } else { // element nie istnieje dodaj nowy
+                        iFunc++;
+                        let il = new InfiniteLoop;
+                        il.add(ilTestFunc, itemIdStr, iFunc);
+                        il.setInterval(5 * 1000);
+                        il.onError(function(error){
+                            console.log(error);
+                        });
+                        il.run();
+
+                        ilArray[itemIdStr] = il;
+                        
+                    }
+                    
+
+
+
                     res.status(201).json({
                         message: 'Success',
                         obj: dataFrameValues
@@ -110,5 +158,10 @@ router.post('/generate-frames', function (req, res, next) {
                 });
         });
 });
+
+
+function ilTestFunc(t1, i) {    
+    console.log(t1 + ' ' + i);
+}
 
 module.exports = router;
