@@ -8,7 +8,7 @@
     <div class="container" style="width: 100%; margin-bottom: 5px; margin-top: 10px">
       <article class="panel panel-default" style="margin-bottom: 5px;" *ngFor="let message of messages">
         <div class="panel-body">
-          <p>{{ message.text }}</p>
+          <p [innerHtml]="message.text"></p>
         </div>
       </article>
     </div>

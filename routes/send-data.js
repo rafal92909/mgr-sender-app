@@ -9,7 +9,6 @@ var mongoose = require('mongoose');
 var InfiniteLoop = require('infinite-loop');
 
 var ilArray = [];
-var iFunc = 0;
 
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////////// SOCKET.IO
@@ -18,19 +17,19 @@ let http = require('http').Server(express);
 let io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
-  console.log('connected to socket');
-  
-  socket.on('disconnect', function(){
-    console.log('disconnected from socked');
-  });
-  
-  socket.on('add-message', (message) => {
-    io.emit('message', {type:'new-message', text: message});    
-  });
+    console.log('connected to socket');
+
+    socket.on('disconnect', function () {
+        console.log('disconnected from socked');
+    });
+
+    socket.on('add-message', (message) => {
+        io.emit('message', { type: 'new-message', text: message });
+    });
 });
 
 http.listen(5000, () => {
-  console.log('started on port 5000');
+    console.log('started on port 5000');
 });
 
 
@@ -126,73 +125,256 @@ router.get('/get-data-frame-parts', function (req, res, next) {
 
 //////////////////////////////////////////////////////////////////////////////////// GENERATE FRAMES
 router.post('/generate-frames', function (req, res, next) {
-    let itemIdStr = req.body.itemId;    
-    let itemId = mongoose.Types.ObjectId(itemIdStr);
+    let itemIdStr = req.body.itemId;
+    if (ilArray[itemIdStr] != null) { // element istnieje - stop i usun element
+        ilArray[itemIdStr].stop();
+        ilArray[itemIdStr] = null;
+    } else {
 
-    DataFramePart.find({ item: req.body.itemId })
-        .exec(function (err, dataFrameParts) {
-            if (err) {
-                return res.status(500).json({
-                    title: 'An error occured',
-                    error: err
+        let itemId = mongoose.Types.ObjectId(itemIdStr);
+        DataFramePart.find({ item: req.body.itemId })
+            .exec(function (err, dataFrameParts) {
+                if (err) {
+                    return res.status(500).json({
+                        title: 'An error occured',
+                        error: err
+                    });
+                }
+
+                var dfIDs;
+                dfIDs = dataFrameParts.map(function (df) {
+                    return df._id;
                 });
-            }
 
-            var dfIDs;
-            dfIDs = dataFrameParts.map(function (df) {
-                return df._id;
-            });
+                DataFrameValue.find({ dataFramePartId: { $in: dfIDs } })
+                    .exec(function (err, dataFrameValues) {
+                        if (err) {
+                            return res.status(500).json({
+                                title: 'An error occured',
+                                error: err
+                            });
+                        }
 
-            DataFrameValue.find({ dataFramePartId: { $in: dfIDs } })
-                .exec(function (err, dataFrameValues) {
-                    if (err) {
-                        return res.status(500).json({
-                            title: 'An error occured',
-                            error: err
-                        });
-                    }
-
-                    // console.log(dataFrameParts);
-                    // console.log(dataFrameValues);
-                    
-                    if (ilArray[itemIdStr] != null) { // element istnieje - stop i usun element
-                        ilArray[itemIdStr].stop();
-                        ilArray[itemIdStr] = null;
-                        // let index = ilArray.indexOf(ilArray[itemIdStr]);
-                        // if (index > -1) {
-                        //     ilArray.splice(index, 1);
-                        //     iFunc--;
-                        // }
-                    } else { // element nie istnieje dodaj nowy
-                        iFunc++;
+                        // element nie istnieje dodaj nowy
                         let il = new InfiniteLoop;
-                        il.add(ilTestFunc, itemIdStr, iFunc);
+                        il.add(ilGenerateFrames, dataFrameParts, dataFrameValues, req.body.name);
                         il.setInterval(5 * 1000);
-                        il.onError(function(error){
+                        il.onError(function (error) {
                             console.log(error);
                         });
                         il.run();
 
                         ilArray[itemIdStr] = il;
-                        
-                    }
-                    
 
+                        res.status(201).json({
+                            message: 'Success',
+                            obj: dataFrameValues
+                        });
 
-
-                    res.status(201).json({
-                        message: 'Success',
-                        obj: dataFrameValues
                     });
-
-                });
-        });
+            });
+    }
 });
 
 
-function ilTestFunc(t1, i) {    
-    console.log(t1 + ' ' + i);
-    io.emit('message', {type:'new-message', text: t1});
+function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
+    let jsonDataString = "{ ";
+    let jsonDescString = "{ ";
+    let valueDataString = '"VALUES": [{'
+    for (let i = 0; i < dataFrameParts.length; i++) {
+        let dataFramePart = dataFrameParts[i]._doc;
+        let jsonPart = getJsonPart(dataFramePart, dataFrameValues);
+        // let x1 = jsonPart[0];
+        // let x2 = jsonPart[1];
+        //io.emit('message', {type:'new-message', text: '<b>Data frame: </b>' + x1 + '<br /><b>Desc frame: </b>' + x2});    
+
+        if (dataFramePart.descFramePart == "id" || dataFramePart.descFramePart == "date") {
+            jsonDataString += jsonPart[0] + ', ';
+            jsonDescString += jsonPart[1] + ', ';
+        }
+
+        if (dataFramePart.descFramePart == "value") {
+            valueDataString += jsonPart[0] + ', ';
+            jsonDescString += jsonPart[1] + ', ';
+        }
+    }
+    // if (jsonDataString.endsWith(', ')) {
+    //     jsonDataString = jsonDataString.substring(0, jsonDataString.length - 2);
+    // }
+    if (jsonDescString.endsWith(', ')) {
+        jsonDescString = jsonDescString.substring(0, jsonDescString.length - 2);
+
+    }
+    if (valueDataString.endsWith(', ')) {
+        valueDataString = valueDataString.substring(0, valueDataString.length - 2);
+    }
+    valueDataString += " }]";
+    jsonDataString += valueDataString + " }";
+    jsonDescString += " }";
+    io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString + '<br /><b>Desc frame: </b>' + jsonDescString });
+}
+
+
+function getDataFrameValue(dataFramePartId, dataFrameValues) {
+    for (let i = 0; i < dataFrameValues.length; i++) {
+        let dataFrameValue = dataFrameValues[i]._doc;
+        let id = dataFrameValue.dataFramePartId.toString();
+        if (id == dataFramePartId) {
+            return dataFrameValue;
+        }
+    }
+
+    return null;
+}
+
+function getJsonPart(dataFramePart, dataFrameValues) {
+    let jsonDataString = '';
+    let jsonDescString = '';
+    let dataFrameValue;
+    if (dataFramePart.value == 'getdate') {
+        let dateString = getDateTime();
+        jsonDataString = '"' + dataFramePart.key + '": "' + dateString + '"';
+
+        if (dataFramePart.descFramePart == "id") {
+            jsonDescString = '"ID": ["' + dataFramePart.key + '"]';
+        }
+        if (dataFramePart.descFramePart == "date") {
+            jsonDescString = '"DATE": ["' + dataFramePart.key + '"]';
+        }
+        if (dataFramePart.descFramePart == "value") {
+            jsonDescString = '"' + dataFramePart.key + '": { }';
+        }
+    } else {
+        dataFrameValue = getDataFrameValue(dataFramePart._id.toString(), dataFrameValues);
+        if (dataFrameValue == null) {
+            return ['', ''];
+        }
+    }
+
+    if (dataFramePart.value == "const") {
+        if (dataFramePart.descFramePart == "id") {
+            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + dataFrameValue.value + '"]';
+            jsonDataString = '"' + dataFramePart.key + '": "' + dataFrameValue.value + '"';
+        }
+        if (dataFramePart.descFramePart == "date") {
+            jsonDescString = '"DATE": ["' + dataFramePart.key + '"]';
+            jsonDataString = '"' + dataFramePart.key + '": "' + dataFrameValue.value + '"';
+        }
+        if (dataFramePart.descFramePart == "value") {
+            if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
+                arrayLen = 1;
+            } else {
+                arrayLen = dataFrameValue.arrayLen;
+            }
+            jsonDataString = '"' + dataFramePart.key + '": [';
+            for (let i = 0; i < arrayLen; i++) {
+                jsonDataString += '"' + dataFrameValue.value + '"';
+                if (arrayLen != i + 1) {
+                    jsonDataString += ', ';
+                }
+            }
+            jsonDataString += ' ]';
+
+            jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '') + '"}';
+        }
+    }
+
+    if (dataFramePart.value == "range") {
+        let arrayLen = dataFrameValue.arrayLen;
+        if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
+            arrayLen = 1;
+        } else {
+            arrayLen = dataFrameValue.arrayLen;
+        }
+        let valueMin = dataFrameValue.valueMin;
+        let valueMax = dataFrameValue.valueMax;
+        let precision = dataFrameValue.precision;
+        let randomInterval = dataFrameValue.randomInterval;
+
+        let value = getRandomNumber(valueMin, valueMax, precision);
+
+        jsonDataString = '"' + dataFramePart.key + '": [';
+        for (let i = 0; i < arrayLen; i++) {
+            jsonDataString += '"' + value + '"';
+            if (arrayLen != i + 1) {
+                jsonDataString += ', ';
+            }
+        }
+        jsonDataString += ' ]';
+
+        jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
+            + '", "valueMin": "' + (dataFrameValue.valueMin != null ? dataFrameValue.valueMin : '')
+            + '", "valueMax":"' + (dataFrameValue.valueMax != null ? dataFrameValue.valueMax : '')
+            + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
+            + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
+            + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
+            + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            + '" } ';
+
+        if (dataFramePart.descFramePart == "id") {
+            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + value + '"]';
+        }
+    }
+
+    if (dataFramePart.value == "set") {
+        let arrayLen = dataFrameValue.arrayLen;
+        if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
+            arrayLen = 1;
+        } else {
+            arrayLen = dataFrameValue.arrayLen;
+        }
+
+        let valuesCount = 0;
+        for (let key in Object.keys(dataFrameValue)) {
+            if (Object.keys(dataFrameValue)[key].startsWith('value')) {
+                valuesCount++;
+            }
+        }
+
+        let value = getRandomNumber(0, valuesCount, 0);
+        value = 'value' + value;
+        value = dataFrameValue[value];
+        jsonDataString = '"' + dataFramePart.key + '": [';
+        for (let i = 0; i < arrayLen; i++) {
+            jsonDataString += '"' + value + '"';
+            if (arrayLen != i + 1) {
+                jsonDataString += ', ';
+            }
+        }
+        jsonDataString += ' ]';
+
+        jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
+            + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
+            + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
+            + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
+            + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            + '" } ';
+
+        if (dataFramePart.descFramePart == "id") {
+            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + value + '"]';
+        }
+    }
+
+    return [jsonDataString, jsonDescString];
+}
+
+function getDateTime() {
+    let now = new Date();
+    let time = now.toLocaleTimeString();
+    let yyyy = now.getFullYear();
+    let mm = now.getMonth() + 1
+    let dd = now.getDate();
+
+    mm = (mm > 9 ? '' : '0') + mm;
+    dd = (dd > 9 ? '' : '0') + dd;
+
+    return yyyy + '-' + mm + '-' + dd + ' ' + time;
+}
+
+// TODO - random przekracza wartosc maksymalna?
+function getRandomNumber(valueMin, valueMax, precision) {
+    let random = Math.random() * (valueMax - valueMin) + valueMin;
+    return parseFloat(random).toFixed(precision);
 }
 
 module.exports = router;
