@@ -5,7 +5,7 @@ var Item = require('./item');
 
 var schema = new Schema({
     key: { type: String, required: true },
-    type: { type: String, required: true },
+    //type: { type: String, required: true },
     value: { type: String, required: true },
     descFramePart: { type: String, required: true },
     item: { type: Schema.Types.ObjectId, ref: 'Item' }

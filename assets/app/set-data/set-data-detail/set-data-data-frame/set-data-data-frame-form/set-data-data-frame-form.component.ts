@@ -32,7 +32,7 @@ export class SetDataDataFrameFormComponent implements OnInit {
   onSubmit() {
     const dataFramePart = new DataFramePart(
       this.myForm.value.key,
-      this.myForm.value.type,
+      //this.myForm.value.type,
       this.myForm.value.value,
       this.itemId,
       this.myForm.value.descFramePart,
@@ -50,7 +50,7 @@ export class SetDataDataFrameFormComponent implements OnInit {
   ngOnInit() {
     this.myForm = new FormGroup({
       key: new FormControl(null, Validators.required),
-      type: new FormControl("", Validators.required),
+      //type: new FormControl("", Validators.required),
       value: new FormControl("", Validators.required),
       descFramePart: new FormControl("", Validators.required)
     });

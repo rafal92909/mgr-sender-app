@@ -115,7 +115,7 @@ export class SetDataServie {
                 const result = response.json();
                 const dfp = new DataFramePart(
                     result.obj.key,
-                    result.obj.type,
+                    //result.obj.type,
                     result.obj.value,
                     result.obj.itemId,
                     result.obj.descFramePart,
@@ -143,7 +143,7 @@ export class SetDataServie {
                 for (let dataFramePart of mongoDataFrameParts) {
                     newDataFrameParts.push(new DataFramePart(
                         dataFramePart.key,
-                        dataFramePart.type,
+                        //dataFramePart.type,
                         dataFramePart.value,
                         dataFramePart.item._id,
                         dataFramePart.descFramePart,

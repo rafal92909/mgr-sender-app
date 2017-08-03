@@ -5,6 +5,9 @@ var fs = require("fs");
 var Item = require('../models/item');
 var DataFramePart = require('../models/data-frame-part');
 var DataFrameValue = require('../models/data-frame-value');
+var DataFrame = require('../models/data-frame');
+var DescFrame = require('../models/desc-frame');
+
 var mongoose = require('mongoose');
 var InfiniteLoop = require('infinite-loop');
 
@@ -184,10 +187,6 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
     for (let i = 0; i < dataFrameParts.length; i++) {
         let dataFramePart = dataFrameParts[i]._doc;
         let jsonPart = getJsonPart(dataFramePart, dataFrameValues);
-        // let x1 = jsonPart[0];
-        // let x2 = jsonPart[1];
-        //io.emit('message', {type:'new-message', text: '<b>Data frame: </b>' + x1 + '<br /><b>Desc frame: </b>' + x2});    
-
         if (dataFramePart.descFramePart == "id" || dataFramePart.descFramePart == "date") {
             jsonDataString += jsonPart[0] + ', ';
             jsonDescString += jsonPart[1] + ', ';
@@ -198,9 +197,7 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
             jsonDescString += jsonPart[1] + ', ';
         }
     }
-    // if (jsonDataString.endsWith(', ')) {
-    //     jsonDataString = jsonDataString.substring(0, jsonDataString.length - 2);
-    // }
+    
     if (jsonDescString.endsWith(', ')) {
         jsonDescString = jsonDescString.substring(0, jsonDescString.length - 2);
 
@@ -211,7 +208,26 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
     valueDataString += " }]";
     jsonDataString += valueDataString + " }";
     jsonDescString += " }";
-    io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString + '<br /><b>Desc frame: </b>' + jsonDescString });
+    let jsonData = JSON.parse(jsonDataString);
+    let jsonDesc = JSON.parse(jsonDescString);
+    new DataFrame(jsonData).save(function (err, result) {
+        if (err) {
+            return res.status(500).json({
+                title: 'An error occurred',
+                error: err
+            });
+        }
+        new DescFrame(jsonDesc).save(function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+            io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString + '<br /><b>Desc frame: </b>' + jsonDescString });
+        });
+    });
+
 }
 
 
@@ -362,7 +378,7 @@ function getDateTime() {
     let now = new Date();
     let time = now.toLocaleTimeString();
     let yyyy = now.getFullYear();
-    let mm = now.getMonth() + 1
+    let mm = now.getMonth() + 1;
     let dd = now.getDate();
 
     mm = (mm > 9 ? '' : '0') + mm;
@@ -371,7 +387,12 @@ function getDateTime() {
     return yyyy + '-' + mm + '-' + dd + ' ' + time;
 }
 
-// TODO - random przekracza wartosc maksymalna?
+// TODO - losowanie range powinno byc tylko za pierwszym razem, a kazde nastepne to +- interval
+// TODO - random przekracza wartosc maksymalna?, czasami zwraca null
+// TODO - descFrame generuje sie co iles ramek z danymi
+// TODO - ustawic czas co ile generowac ramki w parametrach globalnych
+// TODO - dolozenie parametru arrayLen
+
 function getRandomNumber(valueMin, valueMax, precision) {
     let random = Math.random() * (valueMax - valueMin) + valueMin;
     return parseFloat(random).toFixed(precision);
