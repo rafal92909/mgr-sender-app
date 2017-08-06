@@ -54,6 +54,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
 
               let desc = null;
               let value = null;
+              let arrayLen = null;
               if (jsonObject != null) {
                 if (jsonObject.hasOwnProperty('desc')) {
                   desc = jsonObject['desc'];
@@ -61,15 +62,20 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 if (jsonObject.hasOwnProperty('value')) {
                   value = jsonObject['value'];
                 }
+                if (jsonObject.hasOwnProperty('arrayLen')) {
+                  arrayLen = jsonObject['arrayLen'];
+                }
               }
               if (this.dataFramePart.descFramePart == 'value') {
                 this.myForm = new FormGroup({
                   'desc': new FormControl(desc, Validators.required),
-                  'value': new FormControl(value, Validators.required)
+                  'value': new FormControl(value, Validators.required),
+                  'arrayLen': new FormControl(arrayLen)
                 });
                 this.elements.push(
                   new FormElements('desc', 'Description', 700, 'text'),
-                  new FormElements('value', 'Const value', 700, 'text')
+                  new FormElements('value', 'Const value', 700, 'text'),
+                  new FormElements('arrayLen', 'Array length', 300, 'text')
                 );
               } else {
                 this.myForm = new FormGroup({
@@ -94,6 +100,8 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               let warningMax = null;
               let criticalMin = null;
               let criticalMax = null;
+              let arrayLen = null;
+              let randomDirection = null;
 
               if (jsonObject != null) {
                 if (jsonObject.hasOwnProperty('desc')) {
@@ -126,19 +134,28 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 if (jsonObject.hasOwnProperty('criticalMax')) {
                   criticalMax = jsonObject['criticalMax'];
                 }
+                if (jsonObject.hasOwnProperty('arrayLen')) {
+                  arrayLen = jsonObject['arrayLen'];
+                }
+                if (jsonObject.hasOwnProperty('randomDirection')) {
+                  randomDirection = jsonObject['randomDirection'];
+                }
               }
               this.elements.push(
                 new FormElements('valueMin', 'Minimum value', 700, 'number'),
                 new FormElements('valueMax', 'Maximum value', 700, 'number'),
                 new FormElements('precision', 'Precisin', 700, 'number'),
                 new FormElements('randomInterval', 'Random interval', 700, 'number'),
+                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text'),
                 new FormElements('warningMin', 'Minimum warning value', 300, 'number'),
                 new FormElements('warningMax', 'Maximum warning value', 300, 'number'),
                 new FormElements('criticalMin', 'Minimum critical value', 300, 'number'),
                 new FormElements('criticalMax', 'Maximum critical value', 300, 'number')
+                
               );
               if (this.dataFramePart.descFramePart == 'value') {
-                this.elements.unshift(new FormElements('desc', 'Description', 300, 'text'));
+                this.elements.unshift(new FormElements('desc', 'Description', 700, 'text'));
+                this.elements.push(new FormElements('arrayLen', 'Array length', 300, 'text'));
 
                 this.myForm = new FormGroup({
                   'desc': new FormControl(desc, Validators.required),
@@ -146,10 +163,12 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   'valueMax': new FormControl(valueMax, Validators.required),
                   'precision': new FormControl(precision, Validators.required),
                   'randomInterval': new FormControl(randomInterval, Validators.required),
+                  'randomDirection': new FormControl(randomDirection),
                   'warningMin': new FormControl(warningMin),
                   'warningMax': new FormControl(warningMax),
                   'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax)
+                  'criticalMax': new FormControl(criticalMax),
+                  'arrayLen': new FormControl(arrayLen)
                 });
               } else {
                 this.myForm = new FormGroup({
@@ -157,12 +176,13 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   'valueMax': new FormControl(valueMax, Validators.required),
                   'precision': new FormControl(precision, Validators.required),
                   'randomInterval': new FormControl(randomInterval, Validators.required),
+                  'randomDirection': new FormControl(randomDirection),
                   'warningMin': new FormControl(warningMin),
                   'warningMax': new FormControl(warningMax),
                   'criticalMin': new FormControl(criticalMin),
                   'criticalMax': new FormControl(criticalMax)
                 });
-              }              
+              }
             }
 
             if (this.dataFramePart.value == "set") {
@@ -172,6 +192,9 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               let warningMax = null;
               let criticalMin = null;
               let criticalMax = null;
+              let arrayLen = null;
+              let randomDirection = null;
+              
               if (jsonObject != null) {
                 values = '';
                 for (let key in Object.keys(jsonObject)) {
@@ -200,10 +223,17 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 if (jsonObject.hasOwnProperty('criticalMax')) {
                   criticalMax = jsonObject['criticalMax'];
                 }
+                if (jsonObject.hasOwnProperty('arrayLen')) {
+                  arrayLen = jsonObject['arrayLen'];
+                }
+                if (jsonObject.hasOwnProperty('randomDirection')) {
+                  randomDirection = jsonObject['randomDirection'];
+                }
               }
 
               this.elements.push(
                 new FormElements('values', 'Set of values (use comma as separator)', 700, 'text'),
+                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text'),
                 new FormElements('warningMin', 'Minimum warning value', 300, 'text'),
                 new FormElements('warningMax', 'Maximum warning value', 300, 'text'),
                 new FormElements('criticalMin', 'Minimum critical value', 300, 'text'),
@@ -211,20 +241,24 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               );
 
               if (this.dataFramePart.descFramePart == 'value') {
-                this.elements.unshift(new FormElements('desc', 'Description', 300, 'text'));
+                this.elements.unshift(new FormElements('desc', 'Description', 700, 'text'));
+                this.elements.push(new FormElements('arrayLen', 'Array length', 300, 'text'));
 
                 this.myForm = new FormGroup({
                   'desc': new FormControl(desc, Validators.required),
                   'values': new FormControl(values, Validators.required),
+                  'randomDirection': new FormControl(randomDirection),                  
                   'warningMin': new FormControl(warningMin),
                   'warningMax': new FormControl(warningMax),
                   'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax)
+                  'criticalMax': new FormControl(criticalMax),
+                  'arrayLen': new FormControl(arrayLen)
                 });
 
               } else {
                 this.myForm = new FormGroup({
                   'values': new FormControl(values, Validators.required),
+                  'randomDirection': new FormControl(randomDirection),                  
                   'warningMin': new FormControl(warningMin),
                   'warningMax': new FormControl(warningMax),
                   'criticalMin': new FormControl(criticalMin),

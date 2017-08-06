@@ -12,6 +12,9 @@ var mongoose = require('mongoose');
 var InfiniteLoop = require('infinite-loop');
 
 var ilArray = [];
+var descFrameIterationArray = [];
+var rangeValuesArray = [];
+var valuesArray = [];
 
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////////// SOCKET.IO
@@ -132,6 +135,9 @@ router.post('/generate-frames', function (req, res, next) {
     if (ilArray[itemIdStr] != null) { // element istnieje - stop i usun element
         ilArray[itemIdStr].stop();
         ilArray[itemIdStr] = null;
+        descFrameIterationArray[itemIdStr] = null;
+        //rangeValuesArray[dataFramePart._id.toString()] = null;
+        //valuesArray[itemIdStr] = null;
     } else {
 
         let itemId = mongoose.Types.ObjectId(itemIdStr);
@@ -158,21 +164,45 @@ router.post('/generate-frames', function (req, res, next) {
                             });
                         }
 
-                        // element nie istnieje dodaj nowy
-                        let il = new InfiniteLoop;
-                        il.add(ilGenerateFrames, dataFrameParts, dataFrameValues, req.body.name);
-                        il.setInterval(5 * 1000);
-                        il.onError(function (error) {
-                            console.log(error);
-                        });
-                        il.run();
 
-                        ilArray[itemIdStr] = il;
+                        fs.readFile("./myconfig.json", function (err, data) {
+                            if (err) {
+                                return res.status(500).json({
+                                    title: 'Cannot read the config file.',
+                                    error: { message: err.message }
+                                });
+                            }
+                            try {
+                                data = JSON.parse(data);
+                                let data_frame_interval = data.data_frame_interval;
+                                let desc_frame_interval = data.desc_frame_interval;
 
-                        res.status(201).json({
-                            message: 'Success',
-                            obj: dataFrameValues
+                                // element nie istnieje dodaj nowy
+                                descFrameIterationArray[itemIdStr] = 0;
+                                let il = new InfiniteLoop;
+                                il.add(ilGenerateFrames, dataFrameParts, dataFrameValues, req.body.name, desc_frame_interval, itemIdStr);
+                                il.setInterval(data_frame_interval);
+                                il.onError(function (error) {
+                                    console.log(error);
+                                });
+                                il.run();
+
+                                ilArray[itemIdStr] = il;
+
+                                res.status(201).json({
+                                    message: 'Success',
+                                    obj: dataFrameValues
+                                });
+
+                            } catch (e) {
+                                return res.status(500).json({
+                                    title: 'Cannot read the config file.',
+                                    error: { message: e.message }
+                                });
+                            }
                         });
+
+
 
                     });
             });
@@ -180,13 +210,13 @@ router.post('/generate-frames', function (req, res, next) {
 });
 
 
-function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
+function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, descFrameInterval, itemIdStr) {
     let jsonDataString = "{ ";
     let jsonDescString = "{ ";
     let valueDataString = '"VALUES": [{'
     for (let i = 0; i < dataFrameParts.length; i++) {
         let dataFramePart = dataFrameParts[i]._doc;
-        let jsonPart = getJsonPart(dataFramePart, dataFrameValues);
+        let jsonPart = getJsonPart(dataFramePart, dataFrameValues, itemIdStr);
         if (dataFramePart.descFramePart == "id" || dataFramePart.descFramePart == "date") {
             jsonDataString += jsonPart[0] + ', ';
             jsonDescString += jsonPart[1] + ', ';
@@ -197,7 +227,7 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
             jsonDescString += jsonPart[1] + ', ';
         }
     }
-    
+
     if (jsonDescString.endsWith(', ')) {
         jsonDescString = jsonDescString.substring(0, jsonDescString.length - 2);
 
@@ -212,20 +242,25 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName) {
     let jsonDesc = JSON.parse(jsonDescString);
     new DataFrame(jsonData).save(function (err, result) {
         if (err) {
-            return res.status(500).json({
-                title: 'An error occurred',
-                error: err
-            });
+            console.log('An error occurred');
+            console.log(err);
+            return false;
         }
-        new DescFrame(jsonDesc).save(function (err, result) {
-            if (err) {
-                return res.status(500).json({
-                    title: 'An error occurred',
-                    error: err
-                });
-            }
-            io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString + '<br /><b>Desc frame: </b>' + jsonDescString });
-        });
+        descFrameIterationArray[itemIdStr] = descFrameIterationArray[itemIdStr] + 1;
+        if (descFrameIterationArray[itemIdStr] == descFrameInterval) {
+            descFrameIterationArray[itemIdStr] = 0;
+            new DescFrame(jsonDesc).save(function (err, result) {
+                if (err) {
+                    console.log('An error occurred');
+                    console.log(err);
+                    return false;
+                }
+                io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString + '<br /><b>Desc frame: </b>' + jsonDescString });
+            });
+        } else {
+            io.emit('message', { type: 'new-message', text: '<b>Logger name: </b>' + itemName + '<br /><b>Data frame: </b>' + jsonDataString });
+        }
+
     });
 
 }
@@ -243,7 +278,7 @@ function getDataFrameValue(dataFramePartId, dataFrameValues) {
     return null;
 }
 
-function getJsonPart(dataFramePart, dataFrameValues) {
+function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
     let jsonDataString = '';
     let jsonDescString = '';
     let dataFrameValue;
@@ -277,7 +312,7 @@ function getJsonPart(dataFramePart, dataFrameValues) {
             jsonDataString = '"' + dataFramePart.key + '": "' + dataFrameValue.value + '"';
         }
         if (dataFramePart.descFramePart == "value") {
-            if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
+            if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen <= 0) {
                 arrayLen = 1;
             } else {
                 arrayLen = dataFrameValue.arrayLen;
@@ -296,7 +331,7 @@ function getJsonPart(dataFramePart, dataFrameValues) {
     }
 
     if (dataFramePart.value == "range") {
-        let arrayLen = dataFrameValue.arrayLen;
+        let arrayLen = 0;
         if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
             arrayLen = 1;
         } else {
@@ -307,15 +342,73 @@ function getJsonPart(dataFramePart, dataFrameValues) {
         let precision = dataFrameValue.precision;
         let randomInterval = dataFrameValue.randomInterval;
 
-        let value = getRandomNumber(valueMin, valueMax, precision);
+        let value = 0;
+        let randomDirection = 'normal';
+        if (dataFrameValue.randomDirection == 'up' || dataFrameValue.randomDirection == 'bottom') {
+            randomDirection = dataFrameValue.randomDirection;
+        }
 
+        if (rangeValuesArray[dataFramePart._id.toString()] != null) { // element istnieje - dodaj/odejmij przedzial
+            let sign = 0;
+            if (randomDirection == 'normal') {
+                sign = getRandomNumber(-1, 1, 0);
+            }
+            if (randomDirection == 'up') {
+                sign = getRandomNumber(-1, 5, 0);
+                if (sign > 0) {
+                    sign = 1;
+                }
+            }
+            if (randomDirection == 'down') {
+                sign = getRandomNumber(-5, 1, 0);
+                if (sign < 0) {
+                    sign = -1;
+                }
+            }
+            randomInterval = sign * randomInterval;
+            value = (rangeValuesArray[dataFramePart._id.toString()] * 1) + randomInterval;
+            value = value.toFixed(precision) * 1;
+
+            if (value > valueMax) {
+                value = valueMax;
+            }
+            if (value < valueMin) {
+                value = valueMin;
+            }
+            rangeValuesArray[dataFramePart._id.toString()] = value;
+        } else { // losuj nowy
+            value = getRandomNumber(valueMin, valueMax, precision);
+            rangeValuesArray[dataFramePart._id.toString()] = value;
+        }
         jsonDataString = '"' + dataFramePart.key + '": [';
-        for (let i = 0; i < arrayLen; i++) {
-            jsonDataString += '"' + value + '"';
-            if (arrayLen != i + 1) {
+
+        if (valuesArray[dataFramePart._id.toString()] != null) { // jezeli jest tablica, przesun wszystkie wartosci o 1 i dodaj na jej poczatek nowa wartosc
+            let tmpArray = valuesArray[dataFramePart._id.toString()];
+            for (let i = tmpArray.length - 1; i > 0; i--) {
+                tmpArray[i] = tmpArray[i - 1];
+            }
+            tmpArray[0] = value;
+            valuesArray[dataFramePart._id.toString()] = tmpArray;
+        } else {
+            let tmpArray = [];
+            for (let i = 0; i < arrayLen; i++) {
+                if (i == 0) {
+                    tmpArray.push(value);
+                } else {
+                    tmpArray.push('');
+                }
+            }
+            valuesArray[dataFramePart._id.toString()] = tmpArray;
+        }
+
+        let tmpArray = valuesArray[dataFramePart._id.toString()];
+        for (let i = 0; i < tmpArray.length; i++) {
+            jsonDataString += '"' + tmpArray[i] + '"';
+            if (tmpArray.length != i + 1) {
                 jsonDataString += ', ';
             }
         }
+
         jsonDataString += ' ]';
 
         jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
@@ -333,7 +426,7 @@ function getJsonPart(dataFramePart, dataFrameValues) {
     }
 
     if (dataFramePart.value == "set") {
-        let arrayLen = dataFrameValue.arrayLen;
+        let arrayLen = 0;
         if (dataFrameValue.arrayLen == null || dataFrameValue.arrayLen == '' || dataFrameValue.arrayLen == 0) {
             arrayLen = 1;
         } else {
@@ -347,16 +440,85 @@ function getJsonPart(dataFramePart, dataFrameValues) {
             }
         }
 
-        let value = getRandomNumber(0, valuesCount, 0);
-        value = 'value' + value;
-        value = dataFrameValue[value];
+        // let value = getRandomNumber(0, valuesCount, 0);
+        // value = 'value' + value;
+        // value = dataFrameValue[value];
+
+
+        let value = 0;
+        let randomDirection = 'normal';
+        if (dataFrameValue.randomDirection == 'up' || dataFrameValue.randomDirection == 'bottom') {
+            randomDirection = dataFrameValue.randomDirection;
+        }
+        if (rangeValuesArray[dataFramePart._id.toString()] != null) { // element istnieje - dodaj/odejmij przedzial
+            let sign = 0;
+            if (randomDirection == 'normal') {
+                sign = getRandomNumber(-1, 1, 0);
+            }
+            if (randomDirection == 'up') {
+                sign = getRandomNumber(-1, 5, 0);
+                if (sign > 0) {
+                    sign = 1;
+                }
+            }
+            if (randomDirection == 'down') {
+                sign = getRandomNumber(-5, 1, 0);
+                if (sign < 0) {
+                    sign = -1;
+                }
+            }
+            value = (rangeValuesArray[dataFramePart._id.toString()] * 1) + (sign * 1);
+            if (value > valuesCount - 1) {
+                value = valuesCount - 1;
+            }
+            if (value < 0) {
+                value = 0;
+            }
+            rangeValuesArray[dataFramePart._id.toString()] = (value * 1);
+            value = 'value' + value;
+            value = dataFrameValue[value];
+        } else { // losuj nowy            
+            value = getRandomNumber(0, valuesCount, 0);
+            rangeValuesArray[dataFramePart._id.toString()] = value;
+            value = 'value' + value;
+            value = dataFrameValue[value];
+        }
+
+        if (valuesArray[dataFramePart._id.toString()] != null) { // jezeli jest tablica, przesun wszystkie wartosci o 1 i dodaj na jej poczatek nowa wartosc
+            let tmpArray = valuesArray[dataFramePart._id.toString()];
+            for (let i = tmpArray.length - 1; i > 0; i--) {
+                tmpArray[i] = tmpArray[i - 1];
+            }
+            tmpArray[0] = value;
+            valuesArray[dataFramePart._id.toString()] = tmpArray;
+        } else {
+            let tmpArray = [];
+            for (let i = 0; i < arrayLen; i++) {
+                if (i == 0) {
+                    tmpArray.push(value);
+                } else {
+                    tmpArray.push('');
+                }
+            }
+            valuesArray[dataFramePart._id.toString()] = tmpArray;
+        }
+
         jsonDataString = '"' + dataFramePart.key + '": [';
-        for (let i = 0; i < arrayLen; i++) {
-            jsonDataString += '"' + value + '"';
-            if (arrayLen != i + 1) {
+
+        let tmpArray = valuesArray[dataFramePart._id.toString()];
+        for (let i = 0; i < tmpArray.length; i++) {
+            jsonDataString += '"' + tmpArray[i] + '"';
+            if (tmpArray.length != i + 1) {
                 jsonDataString += ', ';
             }
         }
+
+        // for (let i = 0; i < arrayLen; i++) {
+        //     jsonDataString += '"' + value + '"';
+        //     if (arrayLen != i + 1) {
+        //         jsonDataString += ', ';
+        //     }
+        // }
         jsonDataString += ' ]';
 
         jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
@@ -376,7 +538,7 @@ function getJsonPart(dataFramePart, dataFrameValues) {
 
 function getDateTime() {
     let now = new Date();
-    let time = now.toLocaleTimeString();
+    let time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
     let yyyy = now.getFullYear();
     let mm = now.getMonth() + 1;
     let dd = now.getDate();
@@ -387,11 +549,6 @@ function getDateTime() {
     return yyyy + '-' + mm + '-' + dd + ' ' + time;
 }
 
-// TODO - losowanie range powinno byc tylko za pierwszym razem, a kazde nastepne to +- interval
-// TODO - random przekracza wartosc maksymalna?, czasami zwraca null
-// TODO - descFrame generuje sie co iles ramek z danymi
-// TODO - ustawic czas co ile generowac ramki w parametrach globalnych
-// TODO - dolozenie parametru arrayLen
 
 function getRandomNumber(valueMin, valueMax, precision) {
     let random = Math.random() * (valueMax - valueMin) + valueMin;
