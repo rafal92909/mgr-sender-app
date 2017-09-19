@@ -180,7 +180,7 @@ router.post('/generate-frames', function (req, res, next) {
                                 // element nie istnieje dodaj nowy
                                 descFrameIterationArray[itemIdStr] = 0;
                                 let il = new InfiniteLoop;
-                                il.add(ilGenerateFrames, dataFrameParts, dataFrameValues, req.body.name, desc_frame_interval, itemIdStr);
+                                il.add(ilGenerateFrames, dataFrameParts, dataFrameValues, req.body.name, req.body.desc, desc_frame_interval, itemIdStr);
                                 il.setInterval(data_frame_interval);
                                 il.onError(function (error) {
                                     console.log(error);
@@ -210,10 +210,11 @@ router.post('/generate-frames', function (req, res, next) {
 });
 
 
-function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, descFrameInterval, itemIdStr) {
-    let jsonDataString = "{ ";
-    let jsonDescString = "{ ";
-    let valueDataString = '"VALUES": [{'
+function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, itemDesc, descFrameInterval, itemIdStr) {
+    let jsonDataString = '{ ';
+    let jsonDescString = '{ ';
+    let valueDataString = '"VALUES": {'
+    let valueDescString = '"VALUES": {'
     for (let i = 0; i < dataFrameParts.length; i++) {
         let dataFramePart = dataFrameParts[i]._doc;
         let jsonPart = getJsonPart(dataFramePart, dataFrameValues, itemIdStr);
@@ -224,20 +225,27 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, descFrameIn
 
         if (dataFramePart.descFramePart == "value") {
             valueDataString += jsonPart[0] + ', ';
-            jsonDescString += jsonPart[1] + ', ';
+            valueDescString += jsonPart[1] + ', ';
         }
+    }    
+
+    if (valueDescString.endsWith(', ')) {
+        valueDescString = valueDescString.substring(0, valueDescString.length - 2);
     }
 
-    if (jsonDescString.endsWith(', ')) {
-        jsonDescString = jsonDescString.substring(0, jsonDescString.length - 2);
-
-    }
     if (valueDataString.endsWith(', ')) {
         valueDataString = valueDataString.substring(0, valueDataString.length - 2);
     }
-    valueDataString += " }]";
-    jsonDataString += valueDataString + " }";
-    jsonDescString += " }";
+    valueDataString +=  ' }';
+    valueDescString += ' }';
+
+    jsonDataString += valueDataString + ' }';
+    jsonDescString += valueDescString + ',';
+
+    jsonDescString += ' "NAME": "' + itemName + '", ';
+    jsonDescString += ' "DESC": "' + itemDesc + '", ';
+    jsonDescString += ' "ITEMID": "' + itemIdStr + '" }';
+
     let jsonData = JSON.parse(jsonDataString);
     let jsonDesc = JSON.parse(jsonDescString);
     new DataFrame(jsonData).save(function (err, result) {
