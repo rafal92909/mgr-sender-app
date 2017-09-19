@@ -243,8 +243,7 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, itemDesc, d
     jsonDescString += valueDescString + ',';
 
     jsonDescString += ' "NAME": "' + itemName + '", ';
-    jsonDescString += ' "DESC": "' + itemDesc + '", ';
-    jsonDescString += ' "ITEMID": "' + itemIdStr + '" }';
+    jsonDescString += ' "DESC": "' + itemDesc + '" }';
 
     let jsonData = JSON.parse(jsonDataString);
     let jsonDesc = JSON.parse(jsonDescString);
@@ -295,10 +294,10 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
         jsonDataString = '"' + dataFramePart.key + '": "' + dateString + '"';
 
         if (dataFramePart.descFramePart == "id") {
-            jsonDescString = '"ID": ["' + dataFramePart.key + '"]';
+            jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '"}';
         }
         if (dataFramePart.descFramePart == "date") {
-            jsonDescString = '"DATE": ["' + dataFramePart.key + '"]';
+            jsonDescString = '"DATE": { "KEY": "' + dataFramePart.key + '"}';
         }
         if (dataFramePart.descFramePart == "value") {
             jsonDescString = '"' + dataFramePart.key + '": { }';
@@ -311,12 +310,13 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
     }
 
     if (dataFramePart.value == "const") {
-        if (dataFramePart.descFramePart == "id") {
-            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + dataFrameValue.value + '"]';
+        if (dataFramePart.descFramePart == "id") {            
+            jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '", "VALUE": "' + dataFrameValue.value + '"}';
+            
             jsonDataString = '"' + dataFramePart.key + '": "' + dataFrameValue.value + '"';
         }
-        if (dataFramePart.descFramePart == "date") {
-            jsonDescString = '"DATE": ["' + dataFramePart.key + '"]';
+        if (dataFramePart.descFramePart == "date") {            
+            jsonDescString = '"DATE": { "KEY": "' + dataFramePart.key + '"}';
             jsonDataString = '"' + dataFramePart.key + '": "' + dataFrameValue.value + '"';
         }
         if (dataFramePart.descFramePart == "value") {
@@ -429,7 +429,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
             + '" } ';
 
         if (dataFramePart.descFramePart == "id") {
-            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + value + '"]';
+            jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '", "VALUE": "' + value + '"}';
         }
     }
 
@@ -537,7 +537,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
             + '" } ';
 
         if (dataFramePart.descFramePart == "id") {
-            jsonDescString = '"ID": ["' + dataFramePart.key + '", "' + value + '"]';
+            jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '", "VALUE": "' + value + '"}';
         }
     }
 
