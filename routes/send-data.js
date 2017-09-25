@@ -546,7 +546,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
 
 function getDateTime() {
     let now = new Date();
-    let time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+    let time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false, second: '2-digit'});
     let yyyy = now.getFullYear();
     let mm = now.getMonth() + 1;
     let dd = now.getDate();
