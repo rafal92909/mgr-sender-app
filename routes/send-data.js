@@ -293,15 +293,15 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
         let dateString = getDateTime();
         jsonDataString = '"' + dataFramePart.key + '": "' + dateString + '"';
 
-        if (dataFramePart.descFramePart == "id") {
-            jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '"}';
-        }
+        // if (dataFramePart.descFramePart == "id") {
+        //     jsonDescString = '"ID": { "KEY": "' + dataFramePart.key + '"}';
+        // }
         if (dataFramePart.descFramePart == "date") {
             jsonDescString = '"DATE": { "KEY": "' + dataFramePart.key + '"}';
         }
-        if (dataFramePart.descFramePart == "value") {
-            jsonDescString = '"' + dataFramePart.key + '": { }';
-        }
+        // if (dataFramePart.descFramePart == "value") {
+        //     jsonDescString = '"' + dataFramePart.key + '": { }';
+        // }
     } else {
         dataFrameValue = getDataFrameValue(dataFramePart._id.toString(), dataFrameValues);
         if (dataFrameValue == null) {
@@ -334,7 +334,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
             }
             jsonDataString += ' ]';
 
-            jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '') + '"}';
+            jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '') + ', "dataType": "' + dataFramePart.value + '" }';
         }
     }
 
@@ -426,6 +426,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
             + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
             + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
             + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            + '", "dataType": "' + dataFramePart.value
             + '" } ';
 
         if (dataFramePart.descFramePart == "id") {
@@ -534,6 +535,7 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
             + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
             + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
             + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            + '", "dataType": "' + dataFramePart.value
             + '" } ';
 
         if (dataFramePart.descFramePart == "id") {
