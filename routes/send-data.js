@@ -530,12 +530,24 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
         // }
         jsonDataString += ' ]';
 
+
+        let dataSet = '';
+        for (let key in Object.keys(dataFrameValue)) {
+            if (Object.keys(dataFrameValue)[key].startsWith('value')) {
+                dataSet = ', "' + dataFrameValue[Object.keys(dataFrameValue)[key]] + '"' + dataSet;
+            }
+        }
+        if (dataSet.length > 2) {
+            dataSet = dataSet.substring(2, dataSet.length); 
+        }
+        dataSet = '[ ' + dataSet + ' ]';
         jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
             + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
             + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
             + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
             + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
-            + '", "dataType": "' + dataFramePart.value
+            + '", "dataSet": ' + dataSet
+            + ', "dataType": "' + dataFramePart.value
             + '" } ';
 
         if (dataFramePart.descFramePart == "id") {
