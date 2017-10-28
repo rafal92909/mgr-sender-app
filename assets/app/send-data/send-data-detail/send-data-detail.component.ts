@@ -6,7 +6,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
   selector: 'mgr-send-data-detail',
   templateUrl: './send-data-detail.component.html'
 })
-export class SendDataDetailComponent implements OnInit {
+export class SendDataDetailComponent implements OnInit, OnDestroy {
   private messages = [];
   private connection;
 

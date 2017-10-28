@@ -34,8 +34,8 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(5000, () => {
-    console.log('started on port 5000');
+http.listen(4999, () => {
+    console.log('started on port 4999');
 });
 
 
@@ -239,7 +239,7 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, itemDesc, d
     valueDataString +=  ' }';
     valueDescString += ' }';
 
-    jsonDataString += valueDataString + ' }';
+    jsonDataString += valueDataString + ', "read": false }';
     jsonDescString += valueDescString + ',';
 
     jsonDescString += ' "NAME": "' + itemName + '", ';
