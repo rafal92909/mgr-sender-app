@@ -238,7 +238,8 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, itemDesc, d
     }
     valueDataString +=  ' }';
     valueDescString += ' }';
-
+    
+    let timestamp = new Date().toISOString();
     jsonDataString += valueDataString + ', "read": false }';
     jsonDescString += valueDescString + ',';
 
@@ -246,6 +247,7 @@ function ilGenerateFrames(dataFrameParts, dataFrameValues, itemName, itemDesc, d
     jsonDescString += ' "DESC": "' + itemDesc + '" }';
 
     let jsonData = JSON.parse(jsonDataString);
+    jsonData.timestamp = new Date();
     let jsonDesc = JSON.parse(jsonDescString);
     new DataFrame(jsonData).save(function (err, result) {
         if (err) {
