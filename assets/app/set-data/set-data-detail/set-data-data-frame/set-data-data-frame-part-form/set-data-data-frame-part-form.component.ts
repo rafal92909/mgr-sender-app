@@ -96,10 +96,10 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               let valueMax = null;
               let precision = null;
               let randomInterval = null;
-              let warningMin = null;
-              let warningMax = null;
-              let criticalMin = null;
-              let criticalMax = null;
+              // let warningMin = null;
+              // let warningMax = null;
+              // let criticalMin = null;
+              // let criticalMax = null;
               let arrayLen = null;
               let randomDirection = null;
 
@@ -122,18 +122,18 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 if (jsonObject.hasOwnProperty('randomInterval')) {
                   randomInterval = jsonObject['randomInterval'];
                 }
-                if (jsonObject.hasOwnProperty('warningMin')) {
-                  warningMin = jsonObject['warningMin'];
-                }
-                if (jsonObject.hasOwnProperty('warningMax')) {
-                  warningMax = jsonObject['warningMax'];
-                }
-                if (jsonObject.hasOwnProperty('criticalMin')) {
-                  criticalMin = jsonObject['criticalMin'];
-                }
-                if (jsonObject.hasOwnProperty('criticalMax')) {
-                  criticalMax = jsonObject['criticalMax'];
-                }
+                // if (jsonObject.hasOwnProperty('warningMin')) {
+                //   warningMin = jsonObject['warningMin'];
+                // }
+                // if (jsonObject.hasOwnProperty('warningMax')) {
+                //   warningMax = jsonObject['warningMax'];
+                // }
+                // if (jsonObject.hasOwnProperty('criticalMin')) {
+                //   criticalMin = jsonObject['criticalMin'];
+                // }
+                // if (jsonObject.hasOwnProperty('criticalMax')) {
+                //   criticalMax = jsonObject['criticalMax'];
+                // }
                 if (jsonObject.hasOwnProperty('arrayLen')) {
                   arrayLen = jsonObject['arrayLen'];
                 }
@@ -146,11 +146,11 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 new FormElements('valueMax', 'Maximum value', 700, 'number'),
                 new FormElements('precision', 'Precisin', 700, 'number'),
                 new FormElements('randomInterval', 'Random interval', 700, 'number'),
-                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text'),
-                new FormElements('warningMin', 'Minimum warning value', 300, 'number'),
-                new FormElements('warningMax', 'Maximum warning value', 300, 'number'),
-                new FormElements('criticalMin', 'Minimum critical value', 300, 'number'),
-                new FormElements('criticalMax', 'Maximum critical value', 300, 'number')
+                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text')
+                // new FormElements('warningMin', 'Minimum warning value', 300, 'number'),
+                // new FormElements('warningMax', 'Maximum warning value', 300, 'number'),
+                // new FormElements('criticalMin', 'Minimum critical value', 300, 'number'),
+                // new FormElements('criticalMax', 'Maximum critical value', 300, 'number')
                 
               );
               if (this.dataFramePart.descFramePart == 'value') {
@@ -164,10 +164,10 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   'precision': new FormControl(precision, Validators.required),
                   'randomInterval': new FormControl(randomInterval, Validators.required),
                   'randomDirection': new FormControl(randomDirection),
-                  'warningMin': new FormControl(warningMin),
-                  'warningMax': new FormControl(warningMax),
-                  'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax),
+                  // 'warningMin': new FormControl(warningMin),
+                  // 'warningMax': new FormControl(warningMax),
+                  // 'criticalMin': new FormControl(criticalMin),
+                  // 'criticalMax': new FormControl(criticalMax),
                   'arrayLen': new FormControl(arrayLen)
                 });
               } else {
@@ -176,11 +176,11 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   'valueMax': new FormControl(valueMax, Validators.required),
                   'precision': new FormControl(precision, Validators.required),
                   'randomInterval': new FormControl(randomInterval, Validators.required),
-                  'randomDirection': new FormControl(randomDirection),
-                  'warningMin': new FormControl(warningMin),
-                  'warningMax': new FormControl(warningMax),
-                  'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax)
+                  'randomDirection': new FormControl(randomDirection)
+                  // 'warningMin': new FormControl(warningMin),
+                  // 'warningMax': new FormControl(warningMax),
+                  // 'criticalMin': new FormControl(criticalMin),
+                  // 'criticalMax': new FormControl(criticalMax)
                 });
               }
             }
@@ -188,10 +188,10 @@ export class SetDataDataFramePartFormComponent implements OnInit {
             if (this.dataFramePart.value == "set") {
               let desc = null;
               let values = null;
-              let warningMin = null;
-              let warningMax = null;
-              let criticalMin = null;
-              let criticalMax = null;
+              // let warningMin = null;
+              // let warningMax = null;
+              // let criticalMin = null;
+              // let criticalMax = null;
               let arrayLen = null;
               let randomDirection = null;
               
@@ -211,18 +211,18 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                 if (jsonObject.hasOwnProperty('desc')) {
                   desc = jsonObject['desc'];
                 }
-                if (jsonObject.hasOwnProperty('warningMin')) {
-                  warningMin = jsonObject['warningMin'];
-                }
-                if (jsonObject.hasOwnProperty('warningMax')) {
-                  warningMax = jsonObject['warningMax'];
-                }
-                if (jsonObject.hasOwnProperty('criticalMin')) {
-                  criticalMin = jsonObject['criticalMin'];
-                }
-                if (jsonObject.hasOwnProperty('criticalMax')) {
-                  criticalMax = jsonObject['criticalMax'];
-                }
+                // if (jsonObject.hasOwnProperty('warningMin')) {
+                //   warningMin = jsonObject['warningMin'];
+                // }
+                // if (jsonObject.hasOwnProperty('warningMax')) {
+                //   warningMax = jsonObject['warningMax'];
+                // }
+                // if (jsonObject.hasOwnProperty('criticalMin')) {
+                //   criticalMin = jsonObject['criticalMin'];
+                // }
+                // if (jsonObject.hasOwnProperty('criticalMax')) {
+                //   criticalMax = jsonObject['criticalMax'];
+                // }
                 if (jsonObject.hasOwnProperty('arrayLen')) {
                   arrayLen = jsonObject['arrayLen'];
                 }
@@ -233,11 +233,11 @@ export class SetDataDataFramePartFormComponent implements OnInit {
 
               this.elements.push(
                 new FormElements('values', 'Set of values (use comma as separator)', 700, 'text'),
-                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text'),
-                new FormElements('warningMin', 'Minimum warning value', 300, 'text'),
-                new FormElements('warningMax', 'Maximum warning value', 300, 'text'),
-                new FormElements('criticalMin', 'Minimum critical value', 300, 'text'),
-                new FormElements('criticalMax', 'Maximum critical value', 300, 'text')
+                new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text')
+                // new FormElements('warningMin', 'Minimum warning value', 300, 'text'),
+                // new FormElements('warningMax', 'Maximum warning value', 300, 'text'),
+                // new FormElements('criticalMin', 'Minimum critical value', 300, 'text'),
+                // new FormElements('criticalMax', 'Maximum critical value', 300, 'text')
               );
 
               if (this.dataFramePart.descFramePart == 'value') {
@@ -248,21 +248,21 @@ export class SetDataDataFramePartFormComponent implements OnInit {
                   'desc': new FormControl(desc, Validators.required),
                   'values': new FormControl(values, Validators.required),
                   'randomDirection': new FormControl(randomDirection),                  
-                  'warningMin': new FormControl(warningMin),
-                  'warningMax': new FormControl(warningMax),
-                  'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax),
+                  // 'warningMin': new FormControl(warningMin),
+                  // 'warningMax': new FormControl(warningMax),
+                  // 'criticalMin': new FormControl(criticalMin),
+                  // 'criticalMax': new FormControl(criticalMax),
                   'arrayLen': new FormControl(arrayLen)
                 });
 
               } else {
                 this.myForm = new FormGroup({
                   'values': new FormControl(values, Validators.required),
-                  'randomDirection': new FormControl(randomDirection),                  
-                  'warningMin': new FormControl(warningMin),
-                  'warningMax': new FormControl(warningMax),
-                  'criticalMin': new FormControl(criticalMin),
-                  'criticalMax': new FormControl(criticalMax)
+                  'randomDirection': new FormControl(randomDirection)
+                  // 'warningMin': new FormControl(warningMin),
+                  // 'warningMax': new FormControl(warningMax),
+                  // 'criticalMin': new FormControl(criticalMin),
+                  // 'criticalMax': new FormControl(criticalMax)
                 });
 
               }

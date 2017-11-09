@@ -424,10 +424,10 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
         jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
             + '", "valueMin": "' + (dataFrameValue.valueMin != null ? dataFrameValue.valueMin : '')
             + '", "valueMax":"' + (dataFrameValue.valueMax != null ? dataFrameValue.valueMax : '')
-            + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
-            + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
-            + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
-            + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            // + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
+            // + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
+            // + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
+            // + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
             + '", "dataType": "' + dataFramePart.value
             + '" } ';
 
@@ -544,10 +544,10 @@ function getJsonPart(dataFramePart, dataFrameValues, itemIdStr) {
         }
         dataSet = '[ ' + dataSet + ' ]';
         jsonDescString = '"' + dataFramePart.key + '": { "desc": "' + (dataFrameValue.desc != null ? dataFrameValue.desc : '')
-            + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
-            + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
-            + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
-            + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
+            // + '", "warningMin": "' + (dataFrameValue.warningMin != null ? dataFrameValue.warningMin : '')
+            // + '", "warningMax": "' + (dataFrameValue.warningMax != null ? dataFrameValue.warningMax : '')
+            // + '", "criticalMin": "' + (dataFrameValue.criticalMin != null ? dataFrameValue.criticalMin : '')
+            // + '", "criticalMax": "' + (dataFrameValue.criticalMax != null ? dataFrameValue.criticalMax : '')
             + '", "dataSet": ' + dataSet
             + ', "dataType": "' + dataFramePart.value
             + '" } ';

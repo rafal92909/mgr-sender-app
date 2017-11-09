@@ -2,7 +2,6 @@
   "pin": "8520",
   "secret_string": "this_is_secret_string_for_jwt_token",
   "session_time": 7200,
-  "data_frame_interval": 5000,
+  "data_frame_interval": 3500,
   "desc_frame_interval": 5
-
 }
