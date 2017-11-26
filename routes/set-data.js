@@ -47,7 +47,7 @@ router.get('/get-items', function (req, res, next) {
                 error: err
             });
         }
-        res.status(201).json({
+        res.status(200).json({
             message: 'Success',
             obj: items
         });
@@ -127,7 +127,7 @@ router.get('/get-data-frame-parts', function (req, res, next) {
                     error: err
                 });
             }
-            res.status(201).json({
+            res.status(200).json({
                 message: 'Success',
                 obj: dataFrameParts
             });
@@ -158,7 +158,7 @@ router.post('/insert-data-frame-part', function (req, res, next) {
                     error: err
                 });
             }
-            res.status(201).json({
+            res.status(200).json({
                 message: 'Saved message',
                 obj: result
             });
@@ -242,12 +242,12 @@ router.get('/get-data-frame-value', function (req, res, next) {
                 });
             }
             if (dataFrameValue.length > 0) {
-                res.status(201).json({
+                res.status(200).json({
                     message: 'Success',
                     obj: dataFrameValue[dataFrameValue.length - 1]._doc
                 });
             } else {
-                res.status(201).json({
+                res.status(200).json({
                     message: 'Success',
                     obj: null
                 });

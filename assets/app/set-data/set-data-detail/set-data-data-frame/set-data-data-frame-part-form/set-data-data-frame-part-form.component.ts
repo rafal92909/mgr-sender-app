@@ -144,7 +144,7 @@ export class SetDataDataFramePartFormComponent implements OnInit {
               this.elements.push(
                 new FormElements('valueMin', 'Minimum value', 700, 'number'),
                 new FormElements('valueMax', 'Maximum value', 700, 'number'),
-                new FormElements('precision', 'Precisin', 700, 'number'),
+                new FormElements('precision', 'Precision', 700, 'number'),
                 new FormElements('randomInterval', 'Random interval', 700, 'number'),
                 new FormElements('randomDirection', 'Random  direction (up, normal, down)', 300, 'text')
                 // new FormElements('warningMin', 'Minimum warning value', 300, 'number'),

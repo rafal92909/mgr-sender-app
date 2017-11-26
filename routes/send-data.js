@@ -38,9 +38,6 @@ http.listen(4999, () => {
     console.log('started on port 4999');
 });
 
-
-// // http://www.syntaxsuccess.com/viewarticle/socket.io-with-rxjs-in-angular-2.0
-
 // ///////////////////////////////////////////////////////////////////////////////////////////////////// 
 
 
@@ -102,7 +99,7 @@ router.get('/get-items', function (req, res, next) {
 
         }
 
-        res.status(201).json({
+        res.status(200).json({
             message: 'Success',
             obj: items
         });
@@ -121,7 +118,7 @@ router.get('/get-data-frame-parts', function (req, res, next) {
                     error: err
                 });
             }
-            res.status(201).json({
+            res.status(200).json({
                 message: 'Success',
                 obj: dataFrameParts
             });
